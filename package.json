@@ -19,6 +19,6 @@
     "test": "npm run test -w @relio/shared && npm run test -w @relio/api"
   },
   "engines": {
-    "node": ">=20"
+    "node": ">=22"
   }
 }

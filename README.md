@@ -19,7 +19,7 @@ prototype/  The clickable HTML prototype and website this code was built from.
 
 ## Run it locally
 
-You need Node 20+, Docker (for PostgreSQL) and, for the Pro app, the Expo Go app on your phone or an iOS/Android simulator.
+You need Node 22+, Docker (for PostgreSQL) and, for the Pro app, the Expo Go app on your phone or an iOS/Android simulator.
 
 ```bash
 # 1. Install
