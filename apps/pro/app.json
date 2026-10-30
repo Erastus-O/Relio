@@ -1,0 +1,23 @@
+{
+  "expo": {
+    "name": "Pro",
+    "slug": "relio-pro",
+    "scheme": "reliopro",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "automatic",
+    "ios": {
+      "bundleIdentifier": "com.serviceproviderplatform.pro",
+      "infoPlist": {
+        "NSCameraUsageDescription": "Take before and after photos of the tasks you complete.",
+        "NSPhotoLibraryUsageDescription": "Attach photos of your work and your documents."
+      }
+    },
+    "android": {
+      "package": "com.serviceproviderplatform.pro",
+      "permissions": ["CAMERA"]
+    },
+    "plugins": ["expo-router", "expo-secure-store", ["expo-image-picker", { "cameraPermission": "Take before and after photos of the tasks you complete." }]],
+    "extra": { "apiUrl": "http://localhost:4000" }
+  }
+}

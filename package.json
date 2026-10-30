@@ -1,0 +1,24 @@
+{
+  "name": "relio",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Relio: website, customer and business web app, admin panel, Pro mobile app and API.",
+  "workspaces": [
+    "packages/*",
+    "apps/api",
+    "apps/web"
+  ],
+  "scripts": {
+    "dev:api": "npm run dev -w @relio/api",
+    "dev:web": "npm run dev -w @relio/web",
+    "dev:pro": "cd apps/pro && npx expo start",
+    "db:up": "docker compose up -d db",
+    "db:migrate": "npm run prisma:migrate -w @relio/api",
+    "db:seed": "npm run seed -w @relio/api",
+    "typecheck": "npm run typecheck -w @relio/shared && npm run typecheck -w @relio/api && npm run typecheck -w @relio/web",
+    "test": "npm run test -w @relio/shared && npm run test -w @relio/api"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

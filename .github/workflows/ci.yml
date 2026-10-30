@@ -1,0 +1,36 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    services:
+      db:
+        image: postgres:16
+        env:
+          POSTGRES_USER: relio
+          POSTGRES_PASSWORD: relio
+          POSTGRES_DB: relio
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U relio" --health-interval 5s --health-timeout 5s --health-retries 10
+    env:
+      DATABASE_URL: postgresql://relio:relio@localhost:5432/relio
+      JWT_SECRET: ci-only-secret
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - run: npx -w @relio/api prisma generate
+      - run: npx -w @relio/api prisma migrate deploy
+      - run: npm run seed -w @relio/api
+      - run: npm run typecheck
+      - run: npm test
+      - run: npx next build
+        working-directory: apps/web

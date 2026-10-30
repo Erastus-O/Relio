@@ -1,0 +1,606 @@
+// Relio data model.
+// Money is stored as integer pence. Dates are UTC.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ---------- identity ----------
+
+model User {
+  id         String   @id @default(cuid())
+  email      String   @unique
+  name       String?
+  phone      String?
+  createdAt  DateTime @default(now())
+  memberships BusinessMember[]
+  customer   Customer?
+  admin      AdminUser?
+  pros       Pro[]
+}
+
+model LoginCode {
+  id        String   @id @default(cuid())
+  email     String
+  codeHash  String
+  expiresAt DateTime
+  attempts  Int      @default(0)
+  usedAt    DateTime?
+  createdAt DateTime @default(now())
+
+  @@index([email])
+}
+
+model AdminUser {
+  id     String    @id @default(cuid())
+  userId String    @unique
+  user   User      @relation(fields: [userId], references: [id])
+  role   AdminRole @default(support)
+}
+
+enum AdminRole {
+  super
+  operations
+  support
+  finance
+}
+
+// ---------- businesses ----------
+
+model Business {
+  id            String         @id @default(cuid())
+  name          String
+  slug          String         @unique
+  status        BusinessStatus @default(onboarding)
+  plan          PlanKey        @default(starter)
+  billing       Billing        @default(monthly)
+  basePostcode  String
+  coverage      String[]       // postcode districts, e.g. PE1, PE6
+  about         String?
+  rating        Float?
+  lastLoginAt   DateTime?
+  suspendedNote String?
+  createdAt     DateTime       @default(now())
+
+  members      BusinessMember[]
+  services     Service[]
+  pros         Pro[]
+  bookings     Booking[]
+  visits       Visit[]
+  offers       Offer[]
+  campaigns    Campaign[]
+  integrations Integration[]
+  courses      Course[]
+  disputes     Dispute[]
+  checks       BusinessCheck[]
+  portfolio    PortfolioPhoto[]
+  priceList    Json?          // PriceList from @relio/shared
+}
+
+enum BusinessStatus {
+  onboarding
+  active
+  suspended
+}
+
+enum PlanKey {
+  starter
+  growth
+  team
+  enterprise
+}
+
+enum Billing {
+  monthly
+  yearly
+}
+
+model BusinessMember {
+  id         String       @id @default(cuid())
+  userId     String
+  businessId String
+  role       BusinessRole @default(owner)
+  user       User         @relation(fields: [userId], references: [id])
+  business   Business     @relation(fields: [businessId], references: [id])
+
+  @@unique([userId, businessId])
+}
+
+enum BusinessRole {
+  owner
+  manager
+  supervisor
+  office
+}
+
+/// Verification checklist the platform completes before a business can publish.
+model BusinessCheck {
+  id         String      @id @default(cuid())
+  businessId String
+  business   Business    @relation(fields: [businessId], references: [id])
+  kind       String      // companies_house, insurance, dbs_policy, bank, identity
+  status     CheckStatus @default(missing)
+  fileKey    String?
+  note       String?
+  checkedAt  DateTime?
+  checkedBy  String?
+
+  @@unique([businessId, kind])
+}
+
+enum CheckStatus {
+  missing
+  submitted
+  verified
+  rejected
+}
+
+model PortfolioPhoto {
+  id         String   @id @default(cuid())
+  businessId String
+  business   Business @relation(fields: [businessId], references: [id])
+  caption    String
+  beforeKey  String?
+  afterKey   String
+  createdAt  DateTime @default(now())
+}
+
+// ---------- services ----------
+
+model Service {
+  id           String       @id @default(cuid())
+  businessId   String
+  business     Business     @relation(fields: [businessId], references: [id])
+  name         String
+  category     String       @default("cleaning")
+  catalogueKey ServiceKey?  // links to the task catalogue in @relio/shared
+  pricingModel Json         // { model: "fixed_size" | "per_room" | "hourly" | "quote", ... }
+  addOns       Json         @default("[]")
+  bookingMode  BookingMode  @default(instant)
+  published    Boolean      @default(false)
+  createdAt    DateTime     @default(now())
+  bookings     Booking[]
+}
+
+enum ServiceKey {
+  regular
+  deep
+  eot
+}
+
+enum BookingMode {
+  instant
+  quote
+}
+
+// ---------- customers and bookings ----------
+
+model Customer {
+  id               String    @id @default(cuid())
+  userId           String    @unique
+  user             User      @relation(fields: [userId], references: [id])
+  marketingConsent Boolean   @default(false)
+  sites            Site[]
+  bookings         Booking[]
+  disputes         Dispute[]
+}
+
+model Site {
+  id           String   @id @default(cuid())
+  customerId   String
+  customer     Customer @relation(fields: [customerId], references: [id])
+  label        String
+  address      String
+  postcode     String
+  accessNotes  String?
+  /// Encrypted at rest; released to assigned pros during their visit window only.
+  accessSecret String?
+  bookings     Booking[]
+}
+
+model Booking {
+  id              String          @id @default(cuid())
+  businessId      String
+  business        Business        @relation(fields: [businessId], references: [id])
+  customerId      String
+  customer        Customer        @relation(fields: [customerId], references: [id])
+  serviceId       String
+  service         Service         @relation(fields: [serviceId], references: [id])
+  siteId          String
+  site            Site            @relation(fields: [siteId], references: [id])
+  frequency       Frequency       @default(once)
+  photoPermission PhotoPermission @default(allowed)
+  source          BookingSource   @default(marketplace)
+  priceSnapshot   Json            // quote lines, totals, price list version
+  platformFee     Int             @default(0)
+  offerId         String?
+  offer           Offer?          @relation(fields: [offerId], references: [id])
+  createdAt       DateTime        @default(now())
+  visits          Visit[]
+  customerPhotos  Photo[]         @relation("BookingCustomerPhotos")
+}
+
+enum Frequency {
+  once
+  weekly
+  fortnightly
+  monthly
+}
+
+enum PhotoPermission {
+  allowed
+  none
+}
+
+enum BookingSource {
+  marketplace
+  direct
+}
+
+model Visit {
+  id          String       @id @default(cuid())
+  bookingId   String
+  booking     Booking      @relation(fields: [bookingId], references: [id])
+  businessId  String
+  business    Business     @relation(fields: [businessId], references: [id])
+  startsAt    DateTime
+  endsAt      DateTime
+  state       VisitState   @default(scheduled)
+  price       Int
+  checkinAt   DateTime?
+  checkinMethod String?
+  checkoutAt  DateTime?
+  submittedAt DateTime?
+  reviewOutcome String?
+  reviewNote  String?
+  reviewedAt  DateTime?
+  reviewedBy  String?
+  tasks       VisitTask[]
+  photos      Photo[]
+  allocations Allocation[]
+  concerns    Concern[]
+  disputes    Dispute[]
+
+  @@index([businessId, startsAt])
+}
+
+enum VisitState {
+  scheduled
+  in_progress
+  submitted
+  completed
+  partial
+  failed
+  cancelled
+}
+
+model VisitTask {
+  id      String      @id @default(cuid())
+  visitId String
+  visit   Visit       @relation(fields: [visitId], references: [id])
+  sort    Int
+  room    String
+  name    String
+  photo   PhotoReq?
+  custom  Boolean     @default(false)
+  result  TaskResult?
+  reason  String?
+  photos  Photo[]
+}
+
+enum PhotoReq {
+  after
+  pair
+}
+
+enum TaskResult {
+  done
+  not_done
+  na
+}
+
+model Photo {
+  id          String      @id @default(cuid())
+  visitId     String?
+  visit       Visit?      @relation(fields: [visitId], references: [id])
+  taskId      String?
+  task        VisitTask?  @relation(fields: [taskId], references: [id])
+  bookingId   String?
+  booking     Booking?    @relation("BookingCustomerPhotos", fields: [bookingId], references: [id])
+  kind        PhotoKind
+  source      PhotoSource
+  room        String?
+  storageKey  String
+  checksum    String
+  takenAt     DateTime
+  uploadedAt  DateTime    @default(now())
+  uploadedBy  String
+}
+
+enum PhotoKind {
+  before
+  after
+}
+
+enum PhotoSource {
+  customer
+  pro
+}
+
+model Concern {
+  id        String   @id @default(cuid())
+  visitId   String
+  visit     Visit    @relation(fields: [visitId], references: [id])
+  taskId    String?
+  text      String
+  status    String   @default("open") // open, reclean_offered, refunded, closed
+  createdAt DateTime @default(now())
+}
+
+model Dispute {
+  id               String        @id @default(cuid())
+  ref              String        @unique
+  businessId       String
+  business         Business      @relation(fields: [businessId], references: [id])
+  customerId       String
+  customer         Customer      @relation(fields: [customerId], references: [id])
+  visitId          String?
+  visit            Visit?        @relation(fields: [visitId], references: [id])
+  issue            String
+  amount           Int
+  status           DisputeStatus @default(open)
+  openedAt         DateTime      @default(now())
+  decisionDueAt    DateTime
+  outcome          String?
+  evidenceViewedAt DateTime?
+  timeline         Json          @default("[]")
+}
+
+enum DisputeStatus {
+  open
+  awaiting_business
+  awaiting_customer
+  resolved
+}
+
+// ---------- pros ----------
+
+model Pro {
+  id          String       @id @default(cuid())
+  businessId  String
+  business    Business     @relation(fields: [businessId], references: [id])
+  userId      String?
+  user        User?        @relation(fields: [userId], references: [id])
+  name        String
+  email       String
+  phone       String?
+  role        String       @default("Cleaner")
+  appStatus   ProAppStatus @default(invited)
+  inviteCode  String?      @unique
+  hourlyRate  Int          @default(1285)
+  startDate   DateTime?
+  skills      String[]
+  onboarding  Json         @default("{}")
+  createdAt   DateTime     @default(now())
+  documents   ProDocument[]
+  allocations Allocation[]
+  training    TrainingRecord[]
+  payLines    PayLine[]
+  wallet      Wallet?
+  payoutAccounts PayoutAccount[]
+
+  @@unique([businessId, email])
+}
+
+enum ProAppStatus {
+  invited
+  active
+  removed
+}
+
+model ProDocument {
+  id              String       @id @default(cuid())
+  proId           String
+  pro             Pro          @relation(fields: [proId], references: [id])
+  kind            DocumentKind
+  type            String       // e.g. Passport, GOV.UK share code, DBS basic
+  fileKey         String
+  expiresOn       DateTime?
+  status          CheckStatus  @default(submitted)
+  verifiedAt      DateTime?
+  verifiedBy      String?
+  note            String?
+  renewalFileKey  String?
+  renewalExpiresOn DateTime?
+  renewalStatus   RenewalStatus?
+  renewalNote     String?
+  renewalSentAt   DateTime?
+  createdAt       DateTime     @default(now())
+
+  @@unique([proId, kind])
+}
+
+enum DocumentKind {
+  photo_id
+  right_to_work
+  dbs
+  bank
+}
+
+enum RenewalStatus {
+  submitted
+  rejected
+}
+
+model Allocation {
+  id        String   @id @default(cuid())
+  visitId   String
+  visit     Visit    @relation(fields: [visitId], references: [id])
+  proId     String
+  pro       Pro      @relation(fields: [proId], references: [id])
+  status    String   @default("draft") // draft, published, cancelled
+  response  String?  // accepted, declined
+  createdAt DateTime @default(now())
+
+  @@unique([visitId, proId])
+}
+
+model Course {
+  id          String   @id @default(cuid())
+  businessId  String
+  business    Business @relation(fields: [businessId], references: [id])
+  name        String
+  mandatory   Boolean  @default(false)
+  refreshMonths Int?
+  records     TrainingRecord[]
+}
+
+model TrainingRecord {
+  id          String    @id @default(cuid())
+  proId       String
+  pro         Pro       @relation(fields: [proId], references: [id])
+  courseId    String
+  course      Course    @relation(fields: [courseId], references: [id])
+  assignedAt  DateTime  @default(now())
+  dueOn       DateTime?
+  completedAt DateTime?
+  expiresOn   DateTime?
+  isRefresher Boolean   @default(false)
+
+  @@unique([proId, courseId])
+}
+
+// ---------- pay ----------
+
+model PayPeriod {
+  id     String    @id @default(cuid())
+  from   DateTime
+  to     DateTime
+  payOn  DateTime
+  status String    @default("draft") // draft, approved, exported, paid
+  lines  PayLine[]
+}
+
+model PayLine {
+  id       String    @id @default(cuid())
+  periodId String
+  period   PayPeriod @relation(fields: [periodId], references: [id])
+  proId    String
+  pro      Pro       @relation(fields: [proId], references: [id])
+  hours    Float
+  gross    Int
+  tax      Int
+  ni       Int
+  loan     Int
+  net      Int
+  employerNi Int
+
+  @@unique([periodId, proId])
+}
+
+model Wallet {
+  id      String       @id @default(cuid())
+  proId   String       @unique
+  pro     Pro          @relation(fields: [proId], references: [id])
+  balance Int          @default(0)
+  txns    WalletTxn[]
+}
+
+model WalletTxn {
+  id        String   @id @default(cuid())
+  walletId  String
+  wallet    Wallet   @relation(fields: [walletId], references: [id])
+  amount    Int      // positive = pay in, negative = withdrawal
+  kind      String   // pay, withdrawal
+  status    String   @default("on_its_way") // on_its_way, sent, failed
+  accountId String?
+  ref       String   @unique
+  createdAt DateTime @default(now())
+}
+
+model PayoutAccount {
+  id        String  @id @default(cuid())
+  proId     String
+  pro       Pro     @relation(fields: [proId], references: [id])
+  holder    String
+  bankName  String
+  sortCode  String
+  last4     String
+  /// Full account number is held by the payment provider, never here.
+  providerRef String
+  preferred Boolean @default(false)
+}
+
+// ---------- growth ----------
+
+model Offer {
+  id         String    @id @default(cuid())
+  businessId String
+  business   Business  @relation(fields: [businessId], references: [id])
+  name       String
+  code       String?
+  type       String    // pct, amount
+  value      Int
+  newCustomersOnly Boolean @default(false)
+  startsOn   DateTime?
+  endsOn     DateTime?
+  status     String    @default("active")
+  bookings   Booking[]
+  campaigns  Campaign[]
+}
+
+model Campaign {
+  id          String    @id @default(cuid())
+  businessId  String
+  business    Business  @relation(fields: [businessId], references: [id])
+  name        String
+  channel     String    // email, sms, ads, reviews
+  platform    String    // own, mailchimp, brevo, google_ads, ...
+  audience    String
+  subject     String?
+  body        String
+  headline    String?
+  budget      Int?
+  offerId     String?
+  offer       Offer?    @relation(fields: [offerId], references: [id])
+  status      String    @default("draft")
+  scheduledAt DateTime?
+  sentAt      DateTime?
+  reached     Int       @default(0)
+  clicks      Int       @default(0)
+  bookings    Int       @default(0)
+  createdAt   DateTime  @default(now())
+}
+
+model Integration {
+  id         String   @id @default(cuid())
+  businessId String
+  business   Business @relation(fields: [businessId], references: [id])
+  provider   String
+  account    String
+  status     String   @default("connected")
+  settings   Json     @default("{}")
+  connectedAt DateTime @default(now())
+
+  @@unique([businessId, provider])
+}
+
+// ---------- audit ----------
+
+model AuditLog {
+  id         String   @id @default(cuid())
+  at         DateTime @default(now())
+  actorId    String?
+  actorName  String
+  businessId String?
+  action     String
+  subject    String
+  detail     String?
+
+  @@index([businessId, at])
+}

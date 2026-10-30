@@ -1,0 +1,13 @@
+services:
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: relio
+      POSTGRES_PASSWORD: relio
+      POSTGRES_DB: relio
+    ports:
+      - "5432:5432"
+    volumes:
+      - relio-db:/var/lib/postgresql/data
+volumes:
+  relio-db:
