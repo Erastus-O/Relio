@@ -32,4 +32,5 @@ jobs:
       - run: npm run seed -w @relio/api
       - run: npm run typecheck
       - run: npm test
+      - run: npm run check:apps
       - run: npm run build:web

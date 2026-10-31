@@ -1,0 +1,4 @@
+/* PRO APP: OTHER CATEGORIES (SP-36, SP-40) */
+const PRO_ACT={
+  
+};

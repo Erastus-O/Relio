@@ -1,0 +1,126 @@
+/* TRAINING AND DEVELOPMENT */
+const COURSE_CATS=[['core','Core compliance','Required for every cleaner. Refreshed on a schedule.'],['skill','Service skills','Each one unlocks a type of work on the rota.'],['pro','Professional development','Recommended. Builds a safer, more skilled team.']];
+function allCourses(){return COURSES.concat((S&&S.customCourses)||[])}
+function courseById(id){return allCourses().find(c=>c.id===id)}
+function courseKind(c){return c.grants?`Unlocks ${SKILL_LABEL[c.grants]} visits`:c.mand?(c.months?`Mandatory · refresh every ${c.months>=12&&c.months%12===0?(c.months/12)+' year'+(c.months>12?'s':''):c.months+' months'}`:'Mandatory · one-off'):(c.months?`Recommended · refresh every ${c.months/12} years`:'Recommended · one-off')}
+const TR={pending:null};
+function matsFor(cid){return (S.trainMats||[]).filter(m=>m.course===cid)}
+function trRec(sid,cid){return ((S.training||{})[sid]||{})[cid]}
+function fileSize(b){return b>=1048576?(b/1048576).toFixed(1)+' MB':Math.max(1,Math.round(b/1024))+' KB'}
+function matMeta(m){if(m.kind==='link'){try{return new URL(m.url).hostname}catch(e){return m.url}}return `${m.name} · ${fileSize(m.size||0)}`}
+const IC_LINK='<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1"/><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/></svg>';
+const IC_DOC='<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h4"/></svg>';
+function matRow(m,opts={}){const as=m.assign||[];
+  return `<div class="mat"><span class="mat-ic">${m.kind==='link'?IC_LINK:IC_DOC}</span><div class="mat-body">${m.kind==='link'?`<a class="mat-t small" href="${esc(m.url)}" target="_blank" rel="noopener noreferrer">${esc(m.title)}</a>`:`<button class="mat-t small" data-act="matOpen" data-id="${m.id}">${esc(m.title)}</button>`}
+    <div class="small muted">${esc(matMeta(m))}${m.kind==='file'&&!m.data?' · sample file':''}</div></div></div>`}
+function trSummary(){const ids=Object.keys(S.staff);const C=allCourses();const all=ids.flatMap(id=>C.map(c=>({id,c,st:trainStatus(id,c.id),r:trRec(id,c.id)})));
+  const mandAll=all.filter(x=>x.c.mand);const ok=mandAll.filter(x=>['done','due'].includes(x.st.k)).length;
+  const bad=mandAll.filter(x=>['none','expired','overdue'].includes(x.st.k));const prog=all.filter(x=>x.st.k==='assigned');
+  const ref=all.filter(x=>x.r&&x.r.status==='complete'&&x.r.expires&&x.r.expires<=addDays(today(),60));
+  return {ids,C,all,mandAll,ok,bad,prog,ref}}
+function refreshRows(){const out=[];Object.keys(S.staff).forEach(id=>allCourses().forEach(c=>{const r=trRec(id,c.id);if(!r)return;
+  if(r.status==='complete'&&r.expires&&r.expires<=addDays(today(),180))out.push({id,c,r,due:r.expires,state:r.expires<today()?'expired':r.expires<=addDays(today(),60)?'due':'later'});
+  else if(r.status==='assigned'&&r.prev)out.push({id,c,r,due:r.due,state:r.due<today()?'overdue':'assigned'})}));
+  return out.sort((a,b)=>a.due.localeCompare(b.due))}
+function bizTraining(){const T=trSummary();const tab=S.biz.trTab||'matrix';
+  const tile=(n,l,d,cls='')=>`<div class="tile ${cls}"><span class="label">${l}</span><span class="n mono">${n}</span><span class="d">${d}</span></div>`;
+  const uniq=a=>a.filter((v,i,x)=>x.indexOf(v)===i);
+  const head=`<div class="rota-top"><div><h1>Training and development</h1><p class="muted">The training a professional cleaner needs, who has done it, what needs refreshing and the materials to learn from. Completing a service skill course adds that skill on the rota.</p></div><div class="row"><button class="btn" data-act="courseAddOpen">Add training</button><button class="btn primary" data-act="trAssignOpen">Assign training</button></div></div>
+  <div class="tiles">${tile(Math.round(T.ok/Math.max(1,T.mandAll.length)*100)+'%','Mandatory compliance',`${T.ok} of ${T.mandAll.length} required records current`)}${tile(T.bad.length,'Overdue or missing',uniq(T.bad.map(x=>S.staff[x.id].display)).join(', ')||'None',T.bad.length?'alert':'')}${tile(T.ref.length,'Refreshers due in 60 days',uniq(T.ref.map(x=>S.staff[x.id].display)).join(', ')||'None',T.ref.length?'warnt':'')}${tile(T.prog.length,'Assigned, in progress','Waiting for completion')}${tile((S.trainMats||[]).length,'Training materials',`Links and documents across ${uniq((S.trainMats||[]).map(m=>m.course)).length} courses`)}</div>
+  <div class="seg emp-tabs" role="tablist" aria-label="Training views">${[['matrix','Training matrix'],['people','By employee'],['refresh','Refreshers',T.bad.length+T.ref.length],['library','Courses and materials']].map(([k,l,n])=>`<button role="tab" aria-selected="${tab===k}" aria-pressed="${tab===k}" data-act="trTab" data-v="${k}">${l}${n?` <span class="count" style="margin-left:4px">${n}</span>`:''}</button>`).join('')}</div>`;
+  let body='';
+  if(tab==='matrix'){body=`<div class="card tablewrap"><div class="panel-h"><h2>Training matrix</h2><span class="small muted">Select a cell to see the record, assign or record completion</span></div>
+    <table class="t matrix tr-matrix"><thead><tr><th>Training</th>${T.ids.map(id=>`<th><button class="linkbtn" data-act="trPerson" data-id="${id}">${esc(S.staff[id].display)}</button></th>`).join('')}</tr></thead><tbody>
+    ${COURSE_CATS.map(([cat,cl])=>{const cs=T.C.filter(c=>(c.cat||'pro')===cat);return cs.length?`<tr class="tr-cat"><th colspan="${T.ids.length+1}">${cl}</th></tr>`+cs.map(c=>`<tr><td><b class="small">${esc(c.name)}</b><div class="small muted">${courseKind(c)}${matsFor(c.id).length?` · ${matsFor(c.id).length} material${matsFor(c.id).length>1?'s':''}`:''}</div></td>${T.ids.map(id=>{const st=trainStatus(id,c.id);return `<td><button data-act="trainOpen" data-id="${id}" data-c="${c.id}" aria-label="${esc(S.staff[id].name)}: ${esc(c.name)}, ${esc(st.label)}">${pill(st.label,st.tone)}</button></td>`}).join('')}</tr>`).join(''):''}).join('')}
+    </tbody></table></div>`}
+  if(tab==='people'){const sid=S.staff[S.biz.trStaff]?S.biz.trStaff:T.ids[0];const s=S.staff[sid];const rows=T.C.map(c=>({c,st:trainStatus(sid,c.id),r:trRec(sid,c.id)}));
+    const done=rows.filter(x=>['done','due'].includes(x.st.k)).length;const mi=mandIssues(sid);const mine=(S.trainMats||[]).filter(m=>(m.assign||[]).some(a=>a.staff===sid));
+    body=`<div class="split side-left tr-split"><div class="card tr-people" role="group" aria-label="Choose employee"><span class="label">Employees · ${T.ids.length}</span>${T.ids.map(id=>`<button class="tr-chip" aria-pressed="${id===sid}" data-act="trPerson" data-id="${id}"><span class="emp-av sm" aria-hidden="true">${esc(S.staff[id].name.split(' ').map(x=>x[0]).join('').slice(0,2))}</span><span><b>${esc(S.staff[id].name)}</b><span class="small muted">${mandIssues(id).length?mandIssues(id).length+' mandatory issue'+(mandIssues(id).length>1?'s':''):'Mandatory up to date'}</span></span></button>`).join('')}</div>
+    <div class="stack" style="min-width:0"><div class="card tablewrap"><div class="panel-h"><div><h2>${esc(s.name)}</h2><p class="small muted">${done} of ${T.C.length} trainings complete · ${mi.length?`<span style="color:var(--bad)">${mi.length} mandatory issue${mi.length>1?'s':''}</span>`:'mandatory training up to date'}</p></div><div class="row"><button class="btn sm ghost" data-act="anGo" data-v="employees" data-id="${sid}">Employee record</button><button class="btn sm primary" data-act="trAssignOpen" data-sid="${sid}">Assign training</button></div></div>
+    <table class="t"><thead><tr><th>Training</th><th>Type</th><th>Completed</th><th>Refresher due</th><th>Status</th><th>Evidence</th><th></th></tr></thead><tbody>
+    ${COURSE_CATS.map(([cat,cl])=>{const rs=rows.filter(x=>(x.c.cat||'pro')===cat);return rs.length?`<tr class="tr-cat"><th colspan="7">${cl}</th></tr>`+rs.map(({c,st,r})=>{const prev=r&&r.prev;const doneD=r&&r.done||prev&&prev.done;const exp=r&&r.expires||prev&&prev.expires;
+      return `<tr><td><b class="small">${esc(c.name)}</b></td><td class="small muted">${courseKind(c)}</td><td class="mono small">${doneD?fdY(doneD):'–'}</td><td class="mono small">${r&&r.status==='assigned'?'Due '+fdY(r.due):exp?fdY(exp):c.months===0||c.grants?'No refresher':'–'}</td><td>${pill(st.label,st.tone)}</td><td class="small">${esc((r&&r.note)||(prev&&prev.note)||'')}</td><td><button class="btn sm ghost" data-act="trainOpen" data-id="${sid}" data-c="${c.id}">${st.k==='none'?'Assign':'Manage'}</button></td></tr>`}).join(''):''}).join('')}</tbody></table></div>
+    <div class="card stack tight"><h2>Materials shared with ${esc(s.display)}</h2>${mine.length?mine.map(m=>{const a=m.assign.find(x=>x.staff===sid);return `<div class="row small" style="justify-content:space-between;border-bottom:1px solid var(--line);padding:6px 0"><span>${m.kind==='link'?IC_LINK:IC_DOC} <b>${esc(m.title)}</b> <span class="muted">· ${esc(courseById(m.course).name)}</span></span>${a.opened?pill('Opened '+a.opened.split(',')[0],'good'):pill('Sent '+a.at.split(',')[0]+' · not opened','warn')}</div>`}).join(''):'<p class="small muted">Nothing shared yet. Assign materials from Courses and materials.</p>'}</div></div></div>`}
+  if(tab==='refresh'){const R=refreshRows();const miss=T.bad.filter(x=>x.st.k==='none');const due=R.filter(x=>['expired','due'].includes(x.state));
+    const grp=(t,list,empty)=>`<tr class="tr-cat"><th colspan="6">${t} · ${list.length}</th></tr>${list.length?list.map(x=>`<tr><td><button class="linkbtn" data-act="trPerson" data-id="${x.id}">${esc(S.staff[x.id].name)}</button></td><td>${esc(x.c.name)}</td><td class="mono small">${x.r.done||x.r.prev&&x.r.prev.done?fdY(x.r.done||x.r.prev.done):'–'}</td><td class="mono small">${fdY(x.due)}</td><td>${x.state==='expired'?pill('Expired','bad'):x.state==='overdue'?pill('Refresher overdue','bad'):x.state==='due'?pill('Due soon','warn'):x.state==='assigned'?pill('Refresher assigned','info'):pill('Upcoming','')}</td><td>${['expired','due','later'].includes(x.state)?`<button class="btn sm" data-act="trainAssign" data-id="${x.id}" data-c="${x.c.id}">Assign refresher</button>`:`<button class="btn sm ghost" data-act="trainOpen" data-id="${x.id}" data-c="${x.c.id}">Record completion</button>`}</td></tr>`).join(''):`<tr><td colspan="6" class="muted small">${empty}</td></tr>`}`;
+    body=`<div class="card tablewrap"><div class="panel-h"><div><h2>Refreshers</h2><p class="small muted">Refresher dates come from each course's refresh interval. Assigning a refresher notifies the cleaner and keeps their last completion on record.</p></div>${due.length?`<button class="btn sm primary" data-act="trAssignAllDue">Assign all ${due.length} due refresher${due.length>1?'s':''}</button>`:''}</div>
+    <table class="t"><thead><tr><th>Employee</th><th>Training</th><th>Last completed</th><th>Due</th><th>Status</th><th></th></tr></thead><tbody>
+    ${grp('Expired or due in the next 60 days',due,'Nothing due. Everyone is current.')}${grp('Refreshers already assigned',R.filter(x=>['assigned','overdue'].includes(x.state)),'None assigned.')}${grp('Coming up in the next 6 months',R.filter(x=>x.state==='later'),'Nothing in the next 6 months.')}
+    </tbody></table>${miss.length?`<p class="small" style="margin-top:8px;color:var(--bad)">Also missing entirely: ${miss.map(x=>`${esc(S.staff[x.id].display)} (${esc(x.c.name)})`).join(', ')}. Assign these from the matrix or By employee.</p>`:''}</div>`}
+  if(tab==='library'){body=COURSE_CATS.map(([cat,cl,cd])=>{const cs=T.C.filter(c=>(c.cat||'pro')===cat);if(!cs.length)return '';
+    return `<section class="stack tight"><div class="sec-h"><h2 class="label">${cl}</h2><span class="small muted">${cd}</span></div><div class="tr-lib">${cs.map(c=>{const cur=T.ids.filter(id=>['done','due'].includes(trainStatus(id,c.id).k)).length;const ms=matsFor(c.id);
+      return `<article class="card tr-course" id="course-${c.id}"><div><h3>${esc(c.name)}</h3><div class="small muted">${courseKind(c)}${c.custom?' · added by you':''}</div></div>
+        <p class="small" style="margin-bottom:0">${esc(c.desc||'')}</p><div>${pill(`${cur}/${T.ids.length} current`,cur===T.ids.length?'good':c.mand?'warn':'')}</div>
+        <div class="stack tight"><span class="label">Materials · ${ms.length}</span>${ms.length?ms.map(m=>matRow(m,{manage:true})).join(''):'<p class="small muted">No materials yet. Add a link to an online course or upload your own document.</p>'}</div>
+        <div class="row" style="margin-top:auto"><button class="btn sm" data-act="matAddOpen" data-c="${c.id}" data-v="link">${IC_LINK} Add link</button><button class="btn sm" data-act="matAddOpen" data-c="${c.id}" data-v="file">${IC_DOC} Upload document</button><button class="btn sm primary" data-act="trAssignOpen" data-c="${c.id}">Assign</button></div></article>`}).join('')}</div></section>`}).join('')}
+  return head+body}
+function staffChecks(name,pre=[],disabled={}){return `<div class="tr-checks">${Object.values(S.staff).map(s=>`<label class="row small tr-check"><input type="checkbox" name="${name}" value="${s.id}" ${pre.includes(s.id)?'checked':''} ${disabled[s.id]?'disabled':''}> <span><b>${esc(s.name)}</b>${disabled[s.id]?` <span class="muted">· ${esc(disabled[s.id])}</span>`:''}</span></label>`).join('')}</div>`}
+const TR_MODALS={
+  trAssign(m){const C=allCourses();
+    if(m.sid){const s=S.staff[m.sid];return {title:'Assign training',sub:esc(s.name),body:`<div class="stack tight"><span class="label">Trainings</span><div class="tr-checks">${C.map(c=>{const st=trainStatus(m.sid,c.id);const busy=['assigned','overdue'].includes(st.k);return `<label class="row small tr-check"><input type="checkbox" name="tr-c" value="${c.id}" ${busy?'disabled':''} ${!busy&&['none','expired'].includes(st.k)&&c.mand?'checked':''}> <span><b>${esc(c.name)}</b> <span class="muted">· ${esc(st.label)}</span></span></label>`}).join('')}</div></div>
+      <label class="f">Complete by<input type="date" id="tr-due" value="${addDays(today(),14)}"></label><label class="f">Note to ${esc(s.display)} (optional)<input type="text" id="tr-msg" placeholder="e.g. Book the online module before your next shift"></label><label class="row small"><input type="checkbox" id="tr-sendmats" checked> Also share the course materials</label><div id="trerr" class="ferr"></div>`,
+      foot:`<button class="btn primary" data-act="trAssignConfirm">Assign and notify</button>`}}
+    const cid=m.c||C[0].id;const c=courseById(cid);const dis={};Object.keys(S.staff).forEach(id=>{const st=trainStatus(id,cid);if(['assigned','overdue'].includes(st.k))dis[id]='already assigned';else if(st.k==='done'&&!c.months)dis[id]='completed'});
+    const pre=Object.keys(S.staff).filter(id=>!dis[id]&&(c.mand?['none','expired','due']:['expired','due']).includes(trainStatus(id,cid).k));
+    return {title:'Assign training',sub:'Choose the training and who should do it',body:`<label class="f">Training<select id="tr-course" data-act="trAssignCourse">${COURSE_CATS.map(([cat,cl])=>`<optgroup label="${cl}">${C.filter(x=>(x.cat||'pro')===cat).map(x=>`<option value="${x.id}" ${x.id===cid?'selected':''}>${esc(x.name)}</option>`).join('')}</optgroup>`).join('')}</select><span class="hint">${courseKind(c)} · ${matsFor(cid).length} material${matsFor(cid).length===1?'':'s'}</span></label>
+      <div class="stack tight"><span class="label">Employees</span>${staffChecks('tr-s',pre,dis)}</div>
+      <label class="f">Complete by<input type="date" id="tr-due" value="${addDays(today(),14)}"></label><label class="f">Note to the cleaners (optional)<input type="text" id="tr-msg" placeholder="e.g. Half-day course at the office, paid time"></label>${matsFor(cid).length?'<label class="row small"><input type="checkbox" id="tr-sendmats" checked> Also share the course materials</label>':''}<div id="trerr" class="ferr"></div>`,
+      foot:`<button class="btn primary" data-act="trAssignConfirm" data-c="${cid}">Assign and notify</button>`}},
+  matAdd(m){const c=courseById(m.c);const link=m.kind==='link';
+    return {title:link?'Add a link':'Upload a document',sub:esc(c.name),body:`<label class="f">Title<input type="text" id="mat-title" placeholder="${link?'e.g. Online COSHH module':'e.g. Our COSHH risk assessment'}"></label>
+      ${link?'<label class="f">Web address<input type="url" id="mat-url" placeholder="https://"><span class="hint">An online course, video or guidance page.</span></label>':`<label class="f">File<input type="file" id="mat-file" accept=".pdf,.doc,.docx,.ppt,.pptx,.xls,.xlsx,.txt,.png,.jpg,.jpeg,.mp4"><span class="hint" id="mat-fhint">PDF, Word, PowerPoint, image or video.</span></label>`}
+      <div class="stack tight"><span class="label">Share with (optional)</span>${staffChecks('mat-s')}</div><div id="materr" class="ferr"></div>`,
+      foot:`<button class="btn primary" data-act="matAddConfirm" data-c="${m.c}" data-v="${m.kind}">${link?'Add link':'Upload'}</button>`}},
+  courseAdd(){return {title:'Add training',sub:'Add a course your business needs, such as a client-specific induction',body:`<label class="f">Name<input type="text" id="co-name" placeholder="e.g. Hospital ward cleaning induction"></label>
+    <div class="grid2"><label class="f">Category<select id="co-cat"><option value="core">Core compliance</option><option value="pro" selected>Professional development</option></select></label><label class="f">Refresher<select id="co-months"><option value="0">One-off, no refresher</option><option value="12">Every year</option><option value="24">Every 2 years</option><option value="36">Every 3 years</option></select></label></div>
+    <label class="row small"><input type="checkbox" id="co-mand"> Mandatory for every cleaner</label><label class="f">What it covers<textarea id="co-desc" rows="3"></textarea></label>
+    <div class="stack tight co-sec"><span class="label">Training material (optional)</span><p class="small muted" style="margin:0">Add a link, upload a document, or both. You can add more later from Courses and materials.</p>
+      <div class="grid2"><label class="f">Link title<input type="text" id="co-ltitle" placeholder="e.g. Online induction module"></label><label class="f">Web address<input type="url" id="co-url" placeholder="https://"></label></div>
+      <label class="f">Document<input type="file" id="mat-file" accept=".pdf,.doc,.docx,.ppt,.pptx,.xls,.xlsx,.txt,.png,.jpg,.jpeg,.mp4"><span class="hint" id="mat-fhint">PDF, Word, PowerPoint, image or video.</span></label><input type="hidden" id="mat-title"></div>
+    <div class="stack tight co-sec"><span class="label">Assign to (optional)</span>${staffChecks('co-s')}<label class="f">Complete by<input type="date" id="co-due" value="${addDays(today(),14)}"></label></div>
+    <div id="coerr" class="ferr"></div>`,foot:`<button class="btn primary" data-act="courseAddConfirm">Add training</button>`}}
+};
+async function matSave(M){let blob;try{const bin=atob(M.data.split(',')[1]);const u8=new Uint8Array(bin.length);for(let i=0;i<bin.length;i++)u8[i]=bin.charCodeAt(i);blob=new Blob([u8],{type:M.type||'application/octet-stream'})}catch(x){toast('Could not open this file');return}
+  let dl=null;try{dl=window.claude&&window.claude.use?await window.claude.use('downloads'):null}catch(x){}
+  if(dl){try{await dl.save({filename:M.name,data:blob})}catch(e){if(e&&e.code&&e.code!=='cancelled'&&e.code!=='declined')toast('The file could not be saved here')}return}
+  const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.target='_blank';a.rel='noopener';a.download=M.name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),60000)}
+function checked(name){return [...document.querySelectorAll(`input[name="${name}"]:checked`)].map(x=>x.value)}
+function shareMats(cid,ids){matsFor(cid).forEach(M=>{M.assign=M.assign||[];ids.forEach(id=>{if(!M.assign.some(a=>a.staff===id))M.assign.push({staff:id,at:stamp(),opened:null})})})}
+function assignTraining(sid,cid,due,msg){const c=courseById(cid);const old=trRec(sid,cid);const prev=old&&old.status==='complete'?{done:old.done,expires:old.expires,note:old.note}:old&&old.prev||null;
+  (S.training[sid]=S.training[sid]||{})[cid]={status:'assigned',assigned:today(),due,prev};
+  notify(sid,`Training assigned: ${c.name}${prev?' (refresher)':''}. Complete by ${fmtD(due)}.${msg?' '+msg:''}`);audit(prev?'Assigned refresher':'Assigned training',`${S.staff[sid].name} · ${c.name}`,`Due ${fmtD(due)}`)}
+const TR_ACT={
+  trTab:e=>{S.biz.trTab=e.v},
+  trPerson:e=>{S.biz.view='training';S.biz.trTab='people';S.biz.trStaff=e.id},
+  trAssignOpen:e=>{S.modal={type:'trAssign',c:e.c||null,sid:e.sid||null}},
+  trAssignCourse:e=>{S.modal={type:'trAssign',c:e.value,sid:null}},
+  trAssignConfirm:e=>{const due=val('tr-due');const msg=val('tr-msg');const sm=document.getElementById('tr-sendmats');const share=sm?sm.checked:false;
+    if(!due||due<today()){setErr('trerr','Choose a completion date from today onwards.');return false}
+    if(S.modal.sid){const cs=checked('tr-c');if(!cs.length){setErr('trerr','Tick at least one training.');return false}cs.forEach(cid=>{assignTraining(S.modal.sid,cid,due,msg);if(share)shareMats(cid,[S.modal.sid])});S.modal=null;toast(`${cs.length} training${cs.length>1?'s':''} assigned. Employee notified.`);return}
+    const cid=e.c;const ids=checked('tr-s');if(!ids.length){setErr('trerr','Tick at least one employee.');return false}
+    ids.forEach(id=>assignTraining(id,cid,due,msg));if(share)shareMats(cid,ids);S.modal=null;toast(`Assigned to ${ids.length} employee${ids.length>1?'s':''} and notified`)},
+  trAssignAllDue:()=>{const due=refreshRows().filter(x=>['expired','due'].includes(x.state));const d=addDays(today(),21);due.forEach(x=>{assignTraining(x.id,x.c.id,d,'');shareMats(x.c.id,[x.id])});toast(`${due.length} refresher${due.length>1?'s':''} assigned, due ${fmtD(d)}`)},
+  matAddOpen:e=>{TR.pending=null;S.modal={type:'matAdd',c:e.c,kind:e.v}},
+  matAddConfirm:e=>{const title=val('mat-title');const ids=checked('mat-s');let M;
+    if(e.v==='link'){const url=val('mat-url');if(!/^https?:\/\/[^\s.]+\.[^\s]+$/i.test(url)){setErr('materr','Enter a full web address starting with https://');return false}M={kind:'link',url,title:title||url}}
+    else{if(!TR.pending){setErr('materr','Choose a file to upload.');return false}M={kind:'file',name:TR.pending.name,size:TR.pending.size,type:TR.pending.type,data:TR.pending.data,title:title||TR.pending.name.replace(/\.[^.]+$/,'')}}
+    if(!M.title){setErr('materr','Give it a title.');return false}
+    Object.assign(M,{id:'mat-'+(S.seq++),course:e.c,addedAt:stamp(),assign:ids.map(id=>({staff:id,at:stamp(),opened:null}))});(S.trainMats=S.trainMats||[]).push(M);
+    ids.forEach(id=>notify(id,`New training material: ${M.title} (${courseById(e.c).name}).`));audit('Added training material',`${courseById(e.c).name} · ${M.title}`,M.kind==='link'?M.url:M.name);
+    TR.pending=null;S.modal=null;toast(ids.length?`Added and shared with ${ids.length}`:'Material added');
+    if(M.kind==='file'&&!M.data)setTimeout(()=>toast('Large file: this demo keeps the file name only'),300)},
+  matOpen:e=>{const M=S.trainMats.find(x=>x.id===e.id);if(!M)return false;if(e.sid)ACT.matOpened({id:e.id,sid:e.sid});
+    if(!M.data){toast('Sample document: no file is stored in this demo');return}
+    matSave(M);},
+  matOpened:e=>{const M=S.trainMats.find(x=>x.id===e.id);const sid=e.sid||S.cl.persona;const a=M&&(M.assign||[]).find(x=>x.staff===sid);if(a&&!a.opened){a.opened=stamp()}},
+  courseAddOpen:()=>{TR.pending=null;S.modal={type:'courseAdd'}},
+  courseAddConfirm:()=>{const name=val('co-name');if(!name){setErr('coerr','Give the training a name.');return false}if(allCourses().some(c=>c.name.toLowerCase()===name.toLowerCase())){setErr('coerr','A training with this name already exists.');return false}
+    const url=val('co-url');if(url&&!/^https?:\/\/[^\s.]+\.[^\s]+$/i.test(url)){setErr('coerr','Enter a full web address starting with https://, or leave it blank.');return false}
+    const ids=checked('co-s');const due=val('co-due');if(ids.length&&(!due||due<today())){setErr('coerr','Choose a completion date from today onwards.');return false}
+    const c={id:'cc'+(S.seq++),name,cat:val('co-cat')||'pro',months:+val('co-months')||0,mand:document.getElementById('co-mand').checked,desc:val('co-desc'),custom:true};(S.customCourses=S.customCourses||[]).push(c);
+    audit('Added training course',name,c.mand?'Mandatory':'Optional');S.trainMats=S.trainMats||[];let nm=0;
+    if(url){S.trainMats.push({id:'mat-'+(S.seq++),course:c.id,kind:'link',url,title:val('co-ltitle')||url,addedAt:stamp(),assign:[]});nm++}
+    if(TR.pending){const P=TR.pending;S.trainMats.push({id:'mat-'+(S.seq++),course:c.id,kind:'file',name:P.name,size:P.size,type:P.type,data:P.data,title:P.name.replace(/\.[^.]+$/,'').replace(/[-_]+/g,' '),addedAt:stamp(),assign:[]});nm++;TR.pending=null}
+    if(ids.length){ids.forEach(id=>assignTraining(id,c.id,due,''));shareMats(c.id,ids)}
+    S.modal=null;S.biz.trTab='library';toast(`Training added${nm?` with ${nm} material${nm>1?'s':''}`:''}${ids.length?` and assigned to ${ids.length}`:''}`)}
+};

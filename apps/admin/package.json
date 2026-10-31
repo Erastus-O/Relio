@@ -2,24 +2,10 @@
   "name": "@relio/admin",
   "version": "0.1.0",
   "private": true,
-  "description": "Relio admin panel: platform totals, businesses and disputes.",
+  "description": "Admin app for Relio, built from the design.",
   "scripts": {
-    "dev": "next dev -p 3003",
-    "build": "next build",
-    "start": "next start -p 3003",
-    "typecheck": "tsc --noEmit"
-  },
-  "dependencies": {
-    "@relio/shared": "*",
-    "@relio/web-ui": "*",
-    "next": "14.2.35",
-    "react": "18.3.1",
-    "react-dom": "18.3.1"
-  },
-  "devDependencies": {
-    "@types/node": "^22.9.0",
-    "@types/react": "^18.3.12",
-    "@types/react-dom": "^18.3.1",
-    "typescript": "^5.6.3"
+    "dev": "node server.mjs 3003",
+    "start": "node server.mjs 3003",
+    "check": "node scripts/check.mjs"
   }
 }

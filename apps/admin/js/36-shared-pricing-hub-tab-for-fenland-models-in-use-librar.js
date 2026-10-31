@@ -1,0 +1,9 @@
+/* Pricing hub tab for Fenland: models in use + library */
+function pmMigrate(){const M=S.mkt;if(!M||M.pmv===1)return;const set=(id,cat,type,over)=>{const l=M.listings.find(x=>x.id===id);if(!l||l.pm)return;const pm=pmPreset(cat,type);Object.assign(pm,over||{});l.pm=pm;l.type=l.type||type;l.price=pmLabel(pm);l.from=pmFrom(pm);if(!['quote'].includes(l.booking))l.booking=pmBooking(pm)};
+  set('L-ss-reg','cleaning','Regular clean',{sizes:{1:p_(70),2:p_(90),3:p_(120),4:p_(150),5:p_(185)}});set('L-pc-reg','cleaning','Deep clean',{rate:p_(26),minH:2});set('L-sw-reg','cleaning','Regular clean',{sizes:{1:p_(60),2:p_(80),3:p_(105),4:p_(130),5:p_(160)}});set('L-dk-reg','cleaning','Regular clean',{sizes:{1:p_(55),2:p_(75),3:p_(100),4:p_(125),5:p_(150)}});
+  set('L-fx-hm','repairs','Handyman');set('L-fx-tap','repairs','Plumbing',{fee:p_(85),rate30:p_(25)});set('L-rc-app','repairs','Appliance repair',{fee:p_(20),incl:30,rate30:p_(20)});
+  set('L-nt-math','tutoring','Exam preparation',{tiers:[{name:'Single lesson',price:p_(35),incl:'1 hour'},{name:'5-lesson pack',price:p_(160),incl:'5 hours, save £15'},{name:'10-lesson pack',price:p_(300),incl:'10 hours, save £50'}]});set('L-nt-on','tutoring','Maths',{rate:p_(32)});set('L-bm-on','tutoring','Languages',{price:p_(30),member:15});set('L-gl-gdn','gardening','Lawn care');
+  set('L-ff-carpet','cleaning','Carpet and upholstery');set('L-ff-off','cleaning','Office and commercial');M.pmv=1}
+(function(){Object.keys(OB_TYPES).forEach(k=>delete OB_TYPES[k]);Object.entries(PM_PRESETS).forEach(([c,t])=>OB_TYPES[c]=Object.keys(t))})();
+function pmEditSet(el){const d=S.modal.d;const path=el.dataset.pme;if(path==='model'){S.modal.d=pmDefaults(el.value,S.modal.cat,S.modal.ptype);return}
+  let v;if(el.type==='checkbox')v=el.checked;else if(el.type==='number')v=el.dataset.raw?(+el.value||0):Math.round((+el.value||0)*100);else v=el.value;pmSetPath(d,path,v)}

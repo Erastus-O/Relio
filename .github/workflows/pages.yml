@@ -1,10 +1,18 @@
-# Publishes the Relio website and clickable prototype to GitHub Pages.
+# Publishes Relio to GitHub Pages:
+#   /            website (apps/website, exported as static files)
+#   /customer/   customer app (apps/customer)
+#   /business/   business app (apps/business)
+#   /admin/      admin app (apps/admin)
+#   /demo.html   the clickable prototype
 name: Deploy site
 
 on:
   push:
     paths:
-      - "prototype/**"
+      - "apps/website/**"
+      - "apps/customer/**"
+      - "apps/business/**"
+      - "apps/admin/**"
       - ".github/workflows/pages.yml"
   workflow_dispatch:
 
@@ -25,15 +33,31 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - id: pages
+        uses: actions/configure-pages@v5
+      - run: npm ci
+      - name: Check the apps' scripts
+        run: npm run check:apps
+      - name: Build the website
+        run: npm run export -w @relio/website
+        env:
+          NEXT_PUBLIC_BASE_PATH: ${{ steps.pages.outputs.base_path }}
+          NEXT_PUBLIC_CUSTOMER_URL: ${{ steps.pages.outputs.base_path }}/customer/
+          NEXT_PUBLIC_BUSINESS_URL: ${{ steps.pages.outputs.base_path }}/business/
+          NEXT_PUBLIC_ADMIN_URL: ${{ steps.pages.outputs.base_path }}/admin/
       - name: Assemble site
         run: |
           mkdir -p _site
-          cp prototype/website.html _site/index.html
-          cp prototype/platform-prototype.html _site/platform-prototype.html
+          cp -r apps/website/out/. _site/
+          for app in customer business admin; do
+            mkdir -p _site/$app
+            cp -r apps/$app/index.html apps/$app/css apps/$app/js _site/$app/
+          done
           touch _site/.nojekyll
-      - uses: actions/configure-pages@v5
-        with:
-          enablement: true
       - uses: actions/upload-pages-artifact@v3
       - id: deployment
         uses: actions/deploy-pages@v4

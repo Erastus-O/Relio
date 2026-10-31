@@ -22,8 +22,9 @@
     "db:up": "docker compose up -d db",
     "db:migrate": "npm run prisma:migrate -w @relio/api",
     "db:seed": "npm run seed -w @relio/api",
-    "typecheck": "npm run typecheck -w @relio/shared && npm run typecheck -w @relio/web-ui && npm run typecheck -w @relio/api && npm run typecheck -w @relio/website && npm run typecheck -w @relio/customer && npm run typecheck -w @relio/business && npm run typecheck -w @relio/admin",
-    "build:web": "npm run build -w @relio/website && npm run build -w @relio/customer && npm run build -w @relio/business && npm run build -w @relio/admin",
+    "typecheck": "npm run typecheck -w @relio/shared && npm run typecheck -w @relio/api && npm run typecheck -w @relio/website",
+    "check:apps": "npm run check -w @relio/customer && npm run check -w @relio/business && npm run check -w @relio/admin",
+    "build:web": "npm run build -w @relio/website",
     "test": "npm run test -w @relio/shared && npm run test -w @relio/api"
   },
   "engines": {
