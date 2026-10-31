@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 import { RootLayout } from "@relio/web-ui";
-import "@relio/web-ui/globals.css";
+import "../site/site.css";
 
 export const metadata: Metadata = {
   title: "Relio",
-  description: "Find, book and run local services: cleaning, repairs and tutoring.",
+  description: "A marketplace and operations platform for service businesses: find local pros, book or request a quote, and run rotas, evidence, invoicing and payroll.",
 };
 
 export default RootLayout;

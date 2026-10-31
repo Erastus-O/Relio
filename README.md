@@ -8,7 +8,8 @@ Relio is a marketplace and operating system for service businesses. This is the 
 
 ```
 apps/
-  website/   Next.js 14. Public website: home, pricing, contact.          :3000
+  website/   Next.js 14. Public website from the design in
+             prototype/website.html, plus contact and the demo.          :3000
   customer/  Next.js 14. Customer app: find and book services, bookings,
              visit reports with before and after photos.                 :3001
   business/  Next.js 14. Business app: overview, quality review, pros and
@@ -49,6 +50,8 @@ npm run dev:web                   # all four web apps, or one at a time:
                                   #   npm run dev:admin     http://localhost:3003
 npm run dev:pro                   # scan the QR code with Expo Go
 ```
+
+The website's design lives in `apps/website/site/` as the original HTML (`markup.html`), CSS (`site.css`) and JavaScript (`site.js`) from `prototype/website.html`, with its photos in `apps/website/public/img/`. Edit those files to change the page. `apps/website/app/site.ts` points the design's buttons at the real apps (Log in → customer app, List your business and plan buttons → business sign-up, Try the demo → the clickable prototype at `/demo.html`) and stops the build if a button is left unmapped.
 
 Each web app is its own Next.js project with its own sign-in at `/login`, so you can run, build and deploy them separately. They find the API and each other through `NEXT_PUBLIC_API_URL`, `NEXT_PUBLIC_WEBSITE_URL`, `NEXT_PUBLIC_CUSTOMER_URL`, `NEXT_PUBLIC_BUSINESS_URL` and `NEXT_PUBLIC_ADMIN_URL` (see each app's `.env.example`; the defaults are the local ports above). The API must list every web app's address in `CORS_ORIGINS`.
 

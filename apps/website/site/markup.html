@@ -1,0 +1,263 @@
+<header class="nav"><div class="wrap">
+  <a class="logo" href="#top" aria-label="Relio home"><i aria-hidden="true"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M4 20h16"/><path d="M7 20V9l5-5 5 5v11"/><path d="M10 14l1.5 1.5L15 12"/></svg></i>Relio</a>
+  <nav aria-label="Main"><a href="#discover">Find services</a><a href="#features">For businesses</a><a href="#demand">Demand map</a><a href="#apps">Apps</a><a href="#for">Categories</a><a href="#pricing">Pricing</a></nav>
+  <div class="right"><a class="plain" href="platform-prototype.html" target="_blank" rel="noopener">Log in</a><a class="btn dark sm" href="platform-prototype.html" target="_blank" rel="noopener">Try the demo</a></div>
+</div></header>
+
+<main id="top" class="wrap">
+
+  <!-- Hero -->
+  <section class="panel hero center" aria-labelledby="h-hero">
+    <h1 id="h-hero" class="h-xl">Find <span class="tile-in t-brand" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg></span>local pros, run <span class="tile-in t-moss" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></span>your business, all <span class="tile-in t-leaf" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>in one place</h1>
+    <p class="lede">A marketplace and operations platform for service businesses. Customers find the nearest eligible provider on a map, book or request a quote, and track the work. Businesses list their services, see where demand is, and run rotas, evidence, invoicing and payroll.</p>
+    <div class="ctas"><a class="btn dark" href="#discover">Find a service</a><a class="btn light" href="platform-prototype.html" target="_blank" rel="noopener">List your business →</a></div>
+    <p class="fine">Piloting in Peterborough and the Fens with cleaning, home repairs and tutoring.</p>
+  </section>
+
+  <!-- Discover -->
+  <section class="panel disc-sec" id="discover" aria-labelledby="h-disc">
+    <div class="disc-copy"><h2 id="h-disc">Nearest eligible first. No paid placement.</h2><p class="lede">Pick what you need and where it should happen. You only see businesses that actually cover that address, nearest first, with an honest label: bookable, quote needed, or not available at your time.</p>
+      <form class="dd-ctl" id="dd" onsubmit="return false"><fieldset><legend>What do you need?</legend><div class="opts"><label><input type="radio" name="dc" value="cleaning" checked><span>Cleaning</span></label><label><input type="radio" name="dc" value="repairs"><span>Home repairs</span></label><label><input type="radio" name="dc" value="tutoring"><span>Tutoring</span></label></div></fieldset>
+        <fieldset><legend>Where should it happen?</legend><div class="opts"><label><input type="radio" name="dl" value="PE6" checked><span>Crowland PE6</span></label><label><input type="radio" name="dl" value="PE1"><span>Peterborough PE1</span></label><label><input type="radio" name="dl" value="PE9"><span>Stamford PE9</span></label><label><input type="radio" name="dl" value="PE13"><span>Wisbech PE13</span></label></div></fieldset></form>
+      <p class="fine">Distances are approximate and straight-line. Some businesses keep their base private, so you see a distance band and no pin. Sample businesses for illustration.</p></div>
+    <div class="dd-out"><div class="dd-map" aria-hidden="true"><svg id="dd-svg" viewBox="0 0 51 46" preserveAspectRatio="xMidYMid slice"></svg><div class="dd-chips" aria-hidden="true"><span>Service location</span><span>+ −</span></div></div><div class="dd-list" id="dd-list" aria-live="polite"></div></div>
+  </section>
+
+  <!-- Product preview -->
+  <section class="panel frame-sec" aria-label="Product preview">
+    <div class="frame" aria-label="Interactive preview of the business workspace">
+      <div class="f-top"><div class="dots"><i></i><i></i><i></i></div><div class="url">business.relio.com/overview</div></div>
+      <div class="f-body">
+        <div class="f-side" role="tablist" aria-label="Workspace pages"><b>Operations</b><button role="tab" data-v="overview" aria-selected="true">Overview</button><button role="tab" data-v="rota" aria-selected="false">Rota <em>3</em></button><button role="tab" data-v="bookings" aria-selected="false">Bookings</button><button role="tab" data-v="disputes" aria-selected="false">Disputes <em>1</em></button><b>Money</b><button role="tab" data-v="payroll" aria-selected="false">Payroll</button><b>Insights</b><button role="tab" data-v="analytics" aria-selected="false">Analytics</button><b>People</b><button role="tab" data-v="training" aria-selected="false">Training</button></div>
+        <div class="f-main" id="fmain" role="tabpanel" aria-live="polite">
+          <h4>Good afternoon, Dami</h4>
+          <div class="kpis"><div class="kpi"><small>Visits today</small><strong>3</strong><small>1 done · 0 in progress</small></div><div class="kpi bad"><small>Staffing gaps</small><strong>2</strong><small>Next 14 days</small></div><div class="kpi warn"><small>Awaiting review</small><strong>1</strong><small>Evidence submitted</small></div><div class="kpi"><small>Advance notice</small><strong>97%</strong><small>Shifts ≥ 7 days ahead</small></div></div>
+          <div class="tbl">
+            <div class="tr"><span>When</span><span>Site</span><span>Crew</span><span>Status</span></div>
+            <div class="tr"><span>07:00</span><span>Nene Valley Accountants</span><span>Kwame M.</span><span class="badge warn">In review</span></div>
+            <div class="tr"><span>13:00</span><span>Okafor home</span><span>Grace A.</span><span class="badge info">Scheduled</span></div>
+            <div class="tr"><span>18:00</span><span>Harbour Logistics · Unit 4</span><span>Tomasz N., Ellie B.</span><span class="badge info">Scheduled</span></div>
+            <div class="tr"><span>Sat 10:00</span><span>Reid home</span><span>Cover needed</span><span class="badge bad">Unfilled</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- About -->
+  <section class="panel about" aria-labelledby="h-about">
+    <div class="copy">
+      <h2 id="h-about">Every service business has that group chat. <span>Hundreds of rota swaps, key codes and job photos, and still nobody can find who did the job on Thursday.</span></h2>
+      <label class="search" for="q"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><span class="sr">Search the examples</span><input id="q" type="search" autocomplete="off" placeholder="Who cleaned the oven at the Reid home"><span class="caret" aria-hidden="true"></span></label><p class="qhint" id="qhint">Try “oven”, “invoice”, “rota” or “training”.</p>
+    </div>
+    <div class="strip" aria-label="Examples of what the platform keeps in one place"><div class="strip-in">
+      <!-- duplicated set for a seamless loop -->
+      <div class="mini" data-k="oven reid photo evidence kitchen before after clean"><span class="t">Reid home · Wed 14 Oct</span><span class="s">Kitchen · Clean inside oven</span><div class="pair"><div class="photo before"><b>Before 10:06</b></div><div class="photo after"><b>After 12:21</b></div></div></div>
+      <div class="mini" data-k="rota shift cover harbour nene okafor reid week"><span class="t">Rota · w/c 19 Oct</span><span class="s">Published v3 · 9 shifts</span><div class="chips"><div class="chipr"><span>Harbour U4 18:00</span><span>2/2</span></div><div class="chipr w"><span>Nene Valley 07:00</span><span>Awaiting</span></div><div class="chipr b"><span>Reid home 10:00</span><span>Cover</span></div><div class="chipr"><span>Okafor home 13:00</span><span>1/1</span></div></div></div>
+      <div class="mini" data-k="invoice harbour paid payment money"><span class="t">INV-2026-0041</span><span class="s">Harbour Logistics · 30 days</span><div class="inv"><div class="r"><span>Office clean × 6</span><span>£660.00</span></div><div class="r"><span>Washroom restock</span><span>£60.00</span></div><div class="r tot"><span>Total</span><span>£720.00</span></div></div><span class="badge ok">Paid</span></div>
+      <div class="mini" data-k="rating review customer okafor stars"><span class="t">Customer rating</span><span class="s">Okafor home · Thu 8 Oct</span><span class="stars" aria-hidden="true">★★★★★</span><span>“Kitchen looks brand new.”</span><div class="lines"><i style="width:80%"></i><i style="width:55%"></i></div></div>
+      <div class="mini" data-k="training coshh renewal course"><span class="t">Training · COSHH</span><span class="s">Refresh every 12 months</span><div class="big">4/5</div><span class="s">cleaners current</span><span class="badge warn">1 renewal due</span></div>
+      <div class="mini" data-k="payroll pay hours employees export"><span class="t">Payroll · 1 – 15 Oct</span><span class="s">Approved hours only</span><div class="big">£1,184</div><span class="s">5 employees · 92.5 h</span><span class="badge info">Ready to export</span></div>
+      <div class="mini dupe" data-k="oven reid photo evidence kitchen before after clean" aria-hidden="true"><span class="t">Reid home · Wed 14 Oct</span><span class="s">Kitchen · Clean inside oven</span><div class="pair"><div class="photo before"><b>Before 10:06</b></div><div class="photo after"><b>After 12:21</b></div></div></div>
+      <div class="mini dupe" data-k="rota shift cover harbour nene okafor reid week" aria-hidden="true"><span class="t">Rota · w/c 19 Oct</span><span class="s">Published v3 · 9 shifts</span><div class="chips"><div class="chipr"><span>Harbour U4 18:00</span><span>2/2</span></div><div class="chipr w"><span>Nene Valley 07:00</span><span>Awaiting</span></div><div class="chipr b"><span>Reid home 10:00</span><span>Cover</span></div><div class="chipr"><span>Okafor home 13:00</span><span>1/1</span></div></div></div>
+      <div class="mini dupe" data-k="invoice harbour paid payment money" aria-hidden="true"><span class="t">INV-2026-0041</span><span class="s">Harbour Logistics · 30 days</span><div class="inv"><div class="r"><span>Office clean × 6</span><span>£660.00</span></div><div class="r"><span>Washroom restock</span><span>£60.00</span></div><div class="r tot"><span>Total</span><span>£720.00</span></div></div><span class="badge ok">Paid</span></div>
+      <div class="mini dupe" data-k="rating review customer okafor stars" aria-hidden="true"><span class="t">Customer rating</span><span class="s">Okafor home · Thu 8 Oct</span><span class="stars" aria-hidden="true">★★★★★</span><span>“Kitchen looks brand new.”</span><div class="lines"><i style="width:80%"></i><i style="width:55%"></i></div></div>
+      <div class="mini dupe" data-k="training coshh renewal course" aria-hidden="true"><span class="t">Training · COSHH</span><span class="s">Refresh every 12 months</span><div class="big">4/5</div><span class="s">cleaners current</span><span class="badge warn">1 renewal due</span></div>
+      <div class="mini dupe" data-k="payroll pay hours employees export" aria-hidden="true"><span class="t">Payroll · 1 – 15 Oct</span><span class="s">Approved hours only</span><div class="big">£1,184</div><span class="s">5 employees · 92.5 h</span><span class="badge info">Ready to export</span></div>
+    </div></div>
+  </section>
+
+  <!-- Features -->
+  <section class="plain-sec feat center" id="features" aria-labelledby="h-feat">
+    <h2 id="h-feat" class="h-lg">One platform<br>for every part of the job.</h2>
+    <div class="fgrid">
+      <article class="fcard"><h3>Bookings and pricing</h3><p>Fixed per visit, hourly, per room or a custom quote. Customers see every line, extra and discount before they accept.</p>
+        <div class="fart"><b>Choose a time</b><div class="slot" role="radiogroup" aria-label="Time slot"><button type="button" role="radio" aria-checked="false">Thu 09:00</button><button type="button" role="radio" aria-checked="true">Thu 13:00</button><button type="button" role="radio" aria-checked="false">Fri 10:00</button></div>
+          <div class="seg-mini" role="radiogroup" aria-label="How often"><button type="button" role="radio" data-f="0" aria-checked="false">Once</button><button type="button" role="radio" data-f="5" aria-checked="false">Monthly</button><button type="button" role="radio" data-f="10" aria-checked="false">Fortnightly</button><button type="button" role="radio" data-f="15" aria-checked="true">Weekly</button></div>
+          <div class="inv" style="margin-top:auto"><div class="r tot"><span id="bk-when">3-bed · Thu 13:00 · weekly</span><span id="bk-price" class="num">£114.75</span></div></div></div></article>
+      <article class="fcard"><h3>Rota with notice built in</h3><p>Plan a week, check everyone’s skills and checks, and publish with the notice your team was promised.</p>
+        <div class="fart"><div class="row-b"><b>w/c 26 Oct · Draft</b><span id="gaps" class="badge bad">2 gaps</span></div><div class="week" id="week"><div class="j"></div><div></div><div class="j"></div><div class="j d"></div><div class="j"></div><div></div><button type="button" class="j g" aria-label="Fill gap: Wednesday"></button><div class="j"></div><button type="button" class="j g" aria-label="Fill gap: Thursday"></button><div class="j d"></div></div><span class="tip">Click a dashed gap to allocate a cleaner.</span></div></article>
+      <article class="fcard"><h3>Proof of every clean</h3><p>Check-in, task-by-task results and timestamped before and after photos, reviewed before the customer sees them.</p>
+        <div class="fart"><div class="cmp" id="cmp" style="--x:50%"><div class="photo before"><b>Before 10:06</b></div><div class="photo after cmp-a"><b>After 12:21</b></div><span class="cmp-h" aria-hidden="true"></span><input type="range" min="0" max="100" value="50" id="cmp-r" aria-label="Drag to compare before and after"></div><span class="badge ok">Evidence complete · 3/3</span></div></article>
+      <article class="fcard"><h3>Invoices and credit notes</h3><p>Turn delivered visits into invoices with purchase orders, part payments and percentage credit notes.</p>
+        <div class="fart"><b>INV-2026-0040 · Nene Valley</b><div class="inv"><div class="r"><span>Office clean × 9</span><span class="num">£720.00</span></div><div class="r"><label for="cn">Credit note <b id="cn-v">10</b>%</label><span class="num" id="cn-a">−£72.00</span></div><input type="range" id="cn" min="0" max="50" step="5" value="10" aria-label="Credit note percentage"><div class="r tot"><span>Balance</span><span class="num" id="cn-b">£648.00</span></div></div></div></article>
+      <article class="fcard"><h3>Payroll from real hours</h3><p>Pay comes from approved visit time and travel, never planned shifts. Corrections are logged and signed off.</p>
+        <div class="fart pay"><div class="row-b"><b>1 – 15 Oct</b><span class="num" id="pay-t">£0.00 approved</span></div>
+          <label class="r"><input type="checkbox" data-amt="36850"><span>Tomasz N.</span><span class="num">27.5 h</span><span class="num">£368.50</span></label>
+          <label class="r"><input type="checkbox" data-amt="26985"><span>Grace A.</span><span class="num">21.0 h</span><span class="num">£269.85</span></label>
+          <label class="r"><input type="checkbox" data-amt="23130"><span>Ellie B.</span><span class="num">18.0 h</span><span class="num">£231.30</span></label></div></article>
+      <article class="fcard"><h3>Analytics that suggest the next move</h3><p>Margins by client and service, spare capacity, and the decisions worth making this month.</p>
+        <div class="fart"><div class="row-b"><b>Revenue by month</b><span class="num" id="bar-v">Hover a month</span></div><div class="bars" id="bars">
+          <button type="button" style="height:66%" data-l="May · £3,290"></button><button type="button" style="height:63%" data-l="Jun · £3,295"></button><button type="button" style="height:70%" data-l="Jul · £3,500"></button><button type="button" style="height:53%" data-l="Aug · £2,660"></button><button type="button" style="height:66%" data-l="Sep · £3,310"></button><button type="button" style="height:60%" data-l="Oct forecast · £2,979"></button></div></div></article>
+    </div>
+  </section>
+
+  <!-- Assistant -->
+  <section class="panel ai" id="assistant" aria-labelledby="h-ai">
+    <div>
+      <h2 id="h-ai">Give your business<br>an assistant that knows it.</h2>
+      <p class="lede">Ask about your rota, clients, money or team in plain English. It reads your live workspace, shows its working, and links you to the page where you act.</p>
+      <div class="asks" role="group" aria-label="Example questions"><button type="button" aria-pressed="true" data-a="cover">Who can cover Saturday's Reid visit?</button><button type="button" aria-pressed="false" data-a="today">What needs my attention today?</button><button type="button" aria-pressed="false" data-a="profit">Which clients are least profitable?</button><button type="button" aria-pressed="false" data-a="quote">Quote a 3-bed end of tenancy</button><button type="button" aria-pressed="false" data-a="rate">Are my prices high enough?</button></div>
+    </div>
+    <div class="chat" id="chat" aria-label="Example conversation" aria-live="polite">
+      <div class="bub">Who can cover Saturday's Reid visit?</div>
+      <div class="ans"><div class="av" aria-hidden="true">✦</div><div class="b">
+        <div class="used"><span>Checked rota</span><span>Checked cover rules</span></div>
+        <p><b>Reid home, Sat 17 Oct 10:00–12:30</b> needs 1 cleaner. Kwame declined.</p>
+        <ul><li><b>Grace Adeyemi</b> is eligible and free that morning.</li><li>Tomasz and Ellie aren't trained for domestic work yet.</li><li>Priya can't take home visits until her DBS check is renewed.</li></ul>
+        <span class="open">Open Rota →</span>
+      </div></div>
+    </div>
+  </section>
+
+  <!-- Who it's for -->
+  <section class="plain-sec for center" id="for" aria-labelledby="h-for">
+    <h2 id="h-for" class="h-lg">One platform,<br>each category its own way.</h2>
+    <p class="lede sub">Every category has its own intake, evidence and credentials. Nobody gets asked for a bedroom count to book a maths tutor.</p>
+    <div class="cards3">
+      <article class="c3"><div class="tag"><i style="background:#F05D23" aria-hidden="true"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M4 21h16"/><path d="M6 21V10l6-5 6 5v11"/></svg></i>Cleaning · live</div><h3>Bedrooms, bathrooms and condition set a fixed price.</h3><p>Recurring plans, room checklists and before-and-after photos, or a supervisor sign-off where photos aren’t allowed.</p></article>
+      <article class="c3"><div class="tag"><i style="background:#2f3d34" aria-hidden="true"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.5 2.5-2.5-.5-.5-2.5z"/></svg></i>Home repairs · pilot</div><h3>Describe the issue, get an assessment or quote, approve before extra work.</h3><p>Parts and time are recorded, with a completion photo or customer sign-off.</p></article>
+      <article class="c3"><div class="tag"><i style="background:#22a06b" aria-hidden="true"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M3 6l9-3 9 3-9 3z"/><path d="M7 8v5c0 1.5 2.2 3 5 3s5-1.5 5-3V8"/></svg></i>Tutoring · pilot</div><h3>At a venue or online, booked by the session.</h3><p>Attendance and sign-off instead of photos. Online sessions sit in their own section, not ranked by distance.</p></article>
+    </div>
+    <p class="fine" style="margin-top:18px">Gardening, pet care and more: businesses can register interest now and draft listings. A category opens for booking only after its template and checks are reviewed.</p>
+  </section>
+
+  <!-- Quote -->
+  <section class="panel quote" aria-label="Why we built it">
+    <div class="q-copy"><blockquote>We want service businesses to spend their time on the work, and customers to find someone who can actually come. The rota, the evidence, the invoices and the chasing should take care of themselves.</blockquote>
+    <div class="by"><i aria-hidden="true"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M4 20h16"/><path d="M7 20V9l5-5 5 5v11"/><path d="M10 14l1.5 1.5L15 12"/></svg></i><span><b style="color:var(--ink)">The Relio team</b><br>Why we're building it</span></div></div>
+    <figure class="q-img"><img src="/img/photo-5.jpg" alt="A heating engineer in a hi-vis vest shows a customer the boiler job on a tablet" width="1100" height="734" loading="lazy"></figure>
+  </section>
+
+  <!-- Commercial -->
+  <section class="panel comm center" aria-labelledby="h-comm">
+    <span class="float" style="background:#2f3d34;left:12%;top:22%" tabindex="0" data-tip="Purchase orders" aria-label="Purchase orders"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M9 7h6M9 11h6M9 15h4"/></svg></span>
+    <span class="float" style="background:#F05D23;left:7%;top:52%" tabindex="0" data-tip="Monthly invoices" aria-label="Monthly invoices"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3h9l3 3v15H6z"/><path d="M9 10h6M9 14h6M9 18h3"/></svg></span>
+    <span class="float" style="background:#3b82f6;left:16%;top:72%" tabindex="0" data-tip="Site access codes" aria-label="Site access codes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="8" cy="15" r="4"/><path d="m11 12 8-8M16 7l2 2"/></svg></span>
+    <span class="float" style="background:#22a06b;right:13%;top:20%" tabindex="0" data-tip="Online quote approval" aria-label="Online quote approval"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6 9 17l-5-5"/></svg></span>
+    <span class="float" style="background:#ede06a;color:#2f3d34;right:7%;top:48%" tabindex="0" data-tip="Approval limits" aria-label="Approval limits"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 6H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></span>
+    <span class="float" style="background:#141414;right:15%;top:72%" tabindex="0" data-tip="Shift scheduling" aria-label="Shift scheduling"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 10h18M8 2v4M16 2v4"/></svg></span>
+    <h2 id="h-comm">Running office contracts?<b>Commercial goes deeper.</b></h2>
+    <p class="lede">Site-by-site access, approval limits for each contact, quotes your client accepts online and invoices that carry their purchase order.</p>
+    <div class="ctas"><a class="btn light sm" href="#for">Explore commercial</a></div>
+  </section>
+
+  <!-- Demand -->
+  <section class="panel dem-sec" id="demand" aria-labelledby="h-dem">
+    <div><h2 id="h-dem">See where customers ask for what you do.</h2><p class="lede">The demand map shows requests for your category on the platform, where they were booked, where nobody could take them, and where other businesses already cover. Plan a new area before you commit staff to it.</p>
+      <div class="opts dem-layers" role="radiogroup" aria-label="Layer"><label><input type="radio" name="dly" value="req" checked><span>Requests</span></label><label><input type="radio" name="dly" value="unmet"><span>Unfulfilled</span></label><label><input type="radio" name="dly" value="supply"><span>Platform supply</span></label></div>
+      <ul class="dem-points"><li>Areas with fewer than 5 customers show “insufficient data”, never zero</li><li>Counts are banded; no pins, names or addresses</li><li>Looking at an area never changes your coverage until you publish it</li></ul></div>
+    <div class="dem-viz"><svg id="dem-svg" viewBox="0 0 51 46" preserveAspectRatio="xMidYMid slice" aria-hidden="true"></svg><p class="fine" id="dem-cap"></p></div>
+  </section>
+
+  <!-- Apps -->
+  <section class="panel apps" id="apps" aria-labelledby="h-apps">
+    <div>
+      <h2 id="h-apps">Four surfaces, one source of truth. Everyone sees only the part that’s theirs.</h2>
+      <div class="applist" role="tablist" aria-label="Apps">
+        <button role="tab" id="tab-cleaner" aria-selected="true" aria-controls="pane-cleaner" data-pane="cleaner"><b>Pro app</b><span>Published shifts and jobs, start and finish photos, and the right evidence for each category, even offline.</span></button>
+        <button role="tab" id="tab-customer" aria-selected="false" aria-controls="pane-customer" data-pane="customer"><b>Customer app</b><span>Find nearby providers on a map, book or request a quote, and keep every provider’s bookings in one account.</span></button>
+        <button role="tab" id="tab-business" aria-selected="false" aria-controls="pane-business" data-pane="business"><b>Business workspace</b><span>Listings, demand map, rota, quality review, disputes, payroll, finance and the assistant, behind two-step sign-in.</span></button>
+        <button role="tab" id="tab-admin" aria-selected="false" aria-controls="pane-admin" data-pane="admin"><b>Admin panel</b><span>Category templates, listing reviews, reports, data health and audited support access for the platform team.</span></button>
+      </div>
+    </div>
+    <div>
+      <div class="phones pane" id="pane-cleaner" role="tabpanel" aria-labelledby="tab-cleaner">
+        <div class="device front"><div class="screen"><span class="island" aria-hidden="true"></span><div class="status" aria-hidden="true"><span class="clk">12:40</span><span class="ico"><svg viewBox="0 0 18 12" width="17" height="11"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="5" y="5.5" width="3" height="6.5" rx="1"/><rect x="10" y="3" width="3" height="9" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/></svg><b>5G</b><svg viewBox="0 0 26 12" width="25" height="12"><rect x=".5" y=".5" width="22" height="11" rx="3.5" fill="none" stroke="currentColor" opacity=".45"/><rect x="2" y="2" width="16" height="8" rx="2"/><rect x="23.5" y="4" width="1.8" height="4" rx=".9" opacity=".45"/></svg></span></div><div class="app"><div class="apphead"><span class="eyebrow">Fenland Fresh</span><h5>Today</h5></div><div class="pc"><span class="badge info">Next visit</span><b style="font-size:15px">13:00–15:30</b><span>Okafor home · 14 Willow Lane</span><span class="bt">Open job</span></div><div class="pc" id="tasks"><div class="row-b"><b>Kitchen</b><span id="task-n" class="num">2/3</span></div><button type="button" class="task" aria-pressed="true"><span>Clean worktops and hob</span><span class="tick">✓</span></button><button type="button" class="task" aria-pressed="true"><span>Clean sink and taps</span><span class="tick">✓</span></button><button type="button" class="task" aria-pressed="false"><span>Inside oven</span><span class="tick">✓</span></button></div><p class="hintp">Tap a task to tick it off.</p></div><nav class="tabbar" aria-hidden="true"><span class="on"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>Today</span><span class=""><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>My rota</span><span class=""><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7l9-4 9 4-9 4z"/><path d="M7 9v5c0 1.5 2.2 3 5 3s5-1.5 5-3V9"/></svg>Training</span><span class=""><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>Profile</span></nav><span class="home" aria-hidden="true"></span></div></div>
+        <div class="device back" aria-hidden="true"><div class="screen"><span class="island" aria-hidden="true"></span><div class="status" aria-hidden="true"><span class="clk">12:41</span><span class="ico"><svg viewBox="0 0 18 12" width="17" height="11"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="5" y="5.5" width="3" height="6.5" rx="1"/><rect x="10" y="3" width="3" height="9" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/></svg><svg viewBox="0 0 26 12" width="25" height="12"><rect x=".5" y=".5" width="22" height="11" rx="3.5" fill="none" stroke="currentColor" opacity=".45"/><rect x="2" y="2" width="16" height="8" rx="2"/><rect x="23.5" y="4" width="1.8" height="4" rx=".9" opacity=".45"/></svg></span></div><div class="app"><div class="apphead"><span class="eyebrow">Okafor home · Bedroom</span><h5>Evidence</h5></div><div class="pair" style="height:150px"><div class="photo before"><b>Before 13:04</b></div><div class="photo after"><b>After 15:12</b></div></div><div class="pc"><div class="row-b"><span>3 photos queued</span><span class="badge warn">Offline</span></div><span class="muted" style="font-size:11px">They upload automatically when you have signal.</span></div><span class="bt ghost">Submit visit</span></div><nav class="tabbar" aria-hidden="true"><span class="on"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>Today</span><span class=""><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>My rota</span><span class=""><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7l9-4 9 4-9 4z"/><path d="M7 9v5c0 1.5 2.2 3 5 3s5-1.5 5-3V9"/></svg>Training</span><span class=""><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>Profile</span></nav><span class="home" aria-hidden="true"></span></div></div>
+      </div>
+      <div class="phones pane" id="pane-customer" role="tabpanel" aria-labelledby="tab-customer" hidden>
+        <div class="device front" aria-hidden="true"><div class="screen"><span class="island" aria-hidden="true"></span><div class="status" aria-hidden="true"><span class="clk">18:02</span><span class="ico"><svg viewBox="0 0 18 12" width="17" height="11"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="5" y="5.5" width="3" height="6.5" rx="1"/><rect x="10" y="3" width="3" height="9" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/></svg><b>5G</b><svg viewBox="0 0 26 12" width="25" height="12"><rect x=".5" y=".5" width="22" height="11" rx="3.5" fill="none" stroke="currentColor" opacity=".45"/><rect x="2" y="2" width="16" height="8" rx="2"/><rect x="23.5" y="4" width="1.8" height="4" rx=".9" opacity=".45"/></svg></span></div><div class="app"><div class="apphead"><span class="eyebrow">Service location · PE6 0JH</span><h5>Cleaning near you</h5></div><div class="pc"><div class="row-b"><b>1 · Fenland Fresh</b><span class="badge ok">Bookable</span></div><span class="muted" style="font-size:11px">0.6 km · ★ 4.6 (38) · from £60</span></div><div class="pc"><div class="row-b"><b>2 · Spotless Spalding</b><span class="badge info">Choose a time</span></div><span class="muted" style="font-size:11px">10–20 km band · ★ 4.8 (21) · from £70</span></div><div class="pc"><div class="row-b"><b>Online</b><span class="badge warn">Quote</span></div><span class="muted" style="font-size:11px">Nearest eligible first. No paid placement.</span></div><span class="bt dark">Book Fenland Fresh</span></div><nav class="tabbar" aria-hidden="true"><span class=""><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>Book</span><span class="on"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 21h16"/><path d="M6 21V10l6-5 6 5v11"/></svg>Visits</span><span class=""><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h9l3 3v15H6z"/><path d="M9 10h6M9 14h6"/></svg>Invoices</span><span class=""><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 1 1 3.5 2.3c-.6.3-1 .9-1 1.7M12 17h.01"/></svg>Concerns</span></nav><span class="home" aria-hidden="true"></span></div></div>
+        <div class="device back" aria-hidden="true"><div class="screen tint"><span class="island" aria-hidden="true"></span><div class="status" aria-hidden="true"><span class="clk">09:12</span><span class="ico"><svg viewBox="0 0 18 12" width="17" height="11"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="5" y="5.5" width="3" height="6.5" rx="1"/><rect x="10" y="3" width="3" height="9" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/></svg><b>5G</b><svg viewBox="0 0 26 12" width="25" height="12"><rect x=".5" y=".5" width="22" height="11" rx="3.5" fill="none" stroke="currentColor" opacity=".45"/><rect x="2" y="2" width="16" height="8" rx="2"/><rect x="23.5" y="4" width="1.8" height="4" rx=".9" opacity=".45"/></svg></span></div><div class="app"><div class="apphead"><span class="eyebrow">Step 4 of 5</span><h5>Book a clean</h5></div><div class="pc"><span>3-bed · regular · weekly</span><b style="font-size:20px;font-family:var(--f-display)">£114.75</b><span class="muted" style="font-size:11px">Per visit · first visit £135</span></div><div class="slot"><span>Thu 13:00</span><span class="on">Fri 10:00</span><span>Sat 09:30</span></div><span class="bt">Pay £135.00</span></div><nav class="tabbar" aria-hidden="true"><span class="on"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>Book</span><span class=""><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 21h16"/><path d="M6 21V10l6-5 6 5v11"/></svg>Visits</span><span class=""><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h9l3 3v15H6z"/><path d="M9 10h6M9 14h6"/></svg>Invoices</span><span class=""><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 1 1 3.5 2.3c-.6.3-1 .9-1 1.7M12 17h.01"/></svg>Concerns</span></nav><span class="home" aria-hidden="true"></span></div></div>
+      </div>
+      <div class="phones pane" id="pane-business" role="tabpanel" aria-labelledby="tab-business" hidden>
+        <div class="device front" aria-hidden="true"><div class="screen"><span class="island" aria-hidden="true"></span><div class="status" aria-hidden="true"><span class="clk">08:15</span><span class="ico"><svg viewBox="0 0 18 12" width="17" height="11"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="5" y="5.5" width="3" height="6.5" rx="1"/><rect x="10" y="3" width="3" height="9" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/></svg><b>5G</b><svg viewBox="0 0 26 12" width="25" height="12"><rect x=".5" y=".5" width="22" height="11" rx="3.5" fill="none" stroke="currentColor" opacity=".45"/><rect x="2" y="2" width="16" height="8" rx="2"/><rect x="23.5" y="4" width="1.8" height="4" rx=".9" opacity=".45"/></svg></span></div><div class="app"><div class="apphead"><span class="eyebrow">Analytics</span><h5>October at a glance</h5></div><div class="kpis" style="grid-template-columns:1fr 1fr;gap:7px"><div class="kpi"><small>Revenue forecast</small><strong>£2,979</strong></div><div class="kpi"><small>Net margin</small><strong>33%</strong></div><div class="kpi"><small>Right first time</small><strong>93%</strong></div><div class="kpi"><small>To collect</small><strong>£1,700</strong></div></div><div class="pc"><span class="badge bad">Risk</span><b>1 invoice is overdue</b><span class="muted" style="font-size:11px">£720 owed by Nene Valley.</span></div></div><nav class="tabbar" aria-hidden="true"><span class=""><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1z"/></svg>Overview</span><span class="on"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>Analytics</span><span class=""><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/></svg>Assistant</span><span class=""><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.5"/><path d="M2 20a7 7 0 0 1 14 0M16 4a3.5 3.5 0 0 1 0 7M18 20a7 7 0 0 0-3-5.7"/></svg>Team</span></nav><span class="home" aria-hidden="true"></span></div></div>
+        <div class="device back" aria-hidden="true"><div class="screen"><span class="island" aria-hidden="true"></span><div class="status" aria-hidden="true"><span class="clk">08:16</span><span class="ico"><svg viewBox="0 0 18 12" width="17" height="11"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="5" y="5.5" width="3" height="6.5" rx="1"/><rect x="10" y="3" width="3" height="9" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/></svg><b>5G</b><svg viewBox="0 0 26 12" width="25" height="12"><rect x=".5" y=".5" width="22" height="11" rx="3.5" fill="none" stroke="currentColor" opacity=".45"/><rect x="2" y="2" width="16" height="8" rx="2"/><rect x="23.5" y="4" width="1.8" height="4" rx=".9" opacity=".45"/></svg></span></div><div class="app"><div class="apphead"><span class="eyebrow">Ask anything</span><h5>Assistant</h5></div><div class="bub sm">Who can cover Saturday?</div><div class="pc"><span class="used"><span>Checked rota</span></span><span><b>Grace Adeyemi</b> is eligible and free on Sat 17 Oct.</span><span class="open">Open Rota →</span></div></div><nav class="tabbar" aria-hidden="true"><span class=""><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1z"/></svg>Overview</span><span class=""><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>Analytics</span><span class="on"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/></svg>Assistant</span><span class=""><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.5"/><path d="M2 20a7 7 0 0 1 14 0M16 4a3.5 3.5 0 0 1 0 7M18 20a7 7 0 0 0-3-5.7"/></svg>Team</span></nav><span class="home" aria-hidden="true"></span></div></div>
+      
+    </div>
+      <div class="pane admin-pane" id="pane-admin" role="tabpanel" aria-labelledby="tab-admin" hidden>
+        <div class="adm-shot" aria-hidden="true"><div class="adm-side"><b>Admin</b><span class="on">Overview</span><span>Categories</span><span>Listings <i>2</i></span><span>Reports <i>2</i></span><span>Data health</span><span>Tenant access</span></div>
+          <div class="adm-main"><div class="row-b"><h5>Marketplace overview</h5><span class="badge ok">Data fresh · 02:00</span></div>
+            <div class="kpis" style="grid-template-columns:repeat(3,1fr);gap:7px"><div class="kpi"><small>Listings live</small><strong>12</strong></div><div class="kpi"><small>Requests, 30 days</small><strong>175</strong></div><div class="kpi"><small>Fulfilment</small><strong>81%</strong></div></div>
+            <div class="pc"><span class="badge warn">Review</span><b>Deepings Domestic · Domestic cleaning</b><span class="muted" style="font-size:11px">Credentials not yet verified: can’t publish</span></div>
+            <div class="pc"><span class="badge info">Request</span><b>Gardening category from Garden Lads</b><span class="muted" style="font-size:11px">Start a pilot template or keep as interest only</span></div></div></div>
+      </div>
+
+  </section>
+
+
+  <!-- Business plans -->
+  <section class="panel plans" id="pricing" aria-labelledby="h-plans">
+    <div class="plans-head center">
+      <span class="eyebrow">Pricing for businesses</span>
+      <h2 id="h-plans" class="h-lg">Free to start. Pay as your team grows.</h2>
+      <p class="lede">Customers book for free and pros use the app for free. Businesses choose a plan, and pay a small fee only on bookings the marketplace brings them. Bookings from your own customers carry no platform fee.</p>
+      <div class="bill" role="group" aria-label="Billing period"><button type="button" id="bill-m" aria-pressed="true">Monthly</button><button type="button" id="bill-y" aria-pressed="false">Yearly <span>2 months free</span></button></div>
+    </div>
+
+    <div class="plan-grid">
+      <article class="plan">
+        <div class="plan-top"><h3>Starter</h3><p>For a sole trader getting their first online bookings.</p></div>
+        <div class="plan-price"><b class="num" data-m="0" data-y="0">£0</b><span>free forever</span></div>
+        <ul class="plan-facts"><li><b>1</b> pro (you)</li><li><b>6%</b> on every marketplace booking</li><li><b>0%</b> on your own customers</li></ul>
+        <a class="btn light" href="platform-prototype.html" target="_blank" rel="noopener">Get started</a>
+        <ul class="plan-list"><li class="inc">Includes</li><li>Marketplace profile with portfolio</li><li>Online booking page and card payments</li><li>Task checklists customers can tailor</li><li>Before and after photos on every job</li></ul>
+      </article>
+      <article class="plan">
+        <div class="plan-top"><h3>Growth</h3><p>For a small team that wants steady, repeat work.</p></div>
+        <div class="plan-price"><b class="num" data-m="29" data-y="24">£29</b><span class="per">per month<span class="yr" hidden>, billed £290 a year</span></span></div>
+        <ul class="plan-facts"><li><b>5</b> pros included, then £5 each</li><li><b>4%</b> on a new customer’s first marketplace booking</li><li><b>0%</b> on your own customers</li></ul>
+        <a class="btn light" href="platform-prototype.html" target="_blank" rel="noopener">Start 30-day trial</a>
+        <ul class="plan-list"><li class="inc">Everything in Starter, plus</li><li>Rota, cover requests and swaps</li><li>Pro verification and document expiry alerts</li><li>Recurring plans, quotes and invoices</li><li>Offers, email and text campaigns</li></ul>
+      </article>
+      <article class="plan pick">
+        <span class="plan-tag">Most chosen</span>
+        <div class="plan-top"><h3>Team</h3><p>For an established business running payroll and training.</p></div>
+        <div class="plan-price"><b class="num" data-m="79" data-y="66">£79</b><span class="per">per month<span class="yr" hidden>, billed £790 a year</span></span></div>
+        <ul class="plan-facts"><li><b>15</b> pros included, then £4 each</li><li><b>2.5%</b> on a new customer’s first marketplace booking</li><li><b>0%</b> on your own customers</li></ul>
+        <a class="btn dark" href="platform-prototype.html" target="_blank" rel="noopener">Start 30-day trial</a>
+        <ul class="plan-list"><li class="inc">Everything in Growth, plus</li><li>Payroll from approved hours and reports</li><li>Training records and refreshers</li><li>Pro earnings, pay day and withdrawals</li><li>Campaign integrations and AI assistant</li></ul>
+      </article>
+      <article class="plan">
+        <div class="plan-top"><h3>Enterprise</h3><p>For multi-site operators and franchises.</p></div>
+        <div class="plan-price"><b>Custom</b><span>volume pricing</span></div>
+        <ul class="plan-facts"><li><b>Unlimited</b> pros and locations</li><li><b>Custom</b> marketplace fee</li><li><b>0%</b> on your own customers</li></ul>
+        <a class="btn light" href="#top">Talk to sales</a>
+        <ul class="plan-list"><li class="inc">Everything in Team, plus</li><li>Several locations under one account</li><li>Custom roles and single sign-on</li><li>Dedicated account manager</li><li>Priority dispute handling</li></ul>
+      </article>
+    </div>
+    <p class="plans-fine">Prices exclude VAT. Card processing is passed on at cost (1.5% + 20p on UK cards) on every plan. The marketplace fee applies only to a customer’s first booking that came through the marketplace; their repeat bookings with you are fee-free on Growth and above.</p>
+
+    <div class="ppc-head"><h2 class="h-md" id="h-cmp">Compare features</h2><p class="muted">Hover or tap a feature to see what it does.</p></div>
+    <div class="ppc-wrap" role="region" aria-labelledby="h-cmp" tabindex="0">
+      <table class="ppc" id="ppc"></table>
+    </div>
+
+    <div class="addons">
+      <div><span class="eyebrow">Add-ons on any paid plan</span></div>
+      <div class="ad"><b>Extra pro</b><span>£5 a month on Growth, £4 on Team</span></div>
+      <div class="ad"><b>Text messages</b><span>4p per text in campaigns and reminders</span></div>
+      <div class="ad"><b>Extra location</b><span>£19 a month on Team</span></div>
+      <div class="ad"><b>DBS checks</b><span>Applied for through the app at cost</span></div>
+    </div>
+  </section>
+
+  <!-- Final CTA -->
+  <section class="panel final center" aria-labelledby="h-final">
+    <h2 id="h-final">Find it. Book it. Get it done right.</h2>
+    <p class="lede">Try the whole loop in the working demo: search on the map, book a repair or a clean, watch the pro complete it, and see the demand map and admin panel.</p>
+    <div class="ctas"><a class="btn dark" href="platform-prototype.html" target="_blank" rel="noopener">Try the demo</a><a class="btn light" href="#features">Explore features →</a></div>
+  </section>
+</main>
+
+<footer><div class="wrap">
+  <div class="fcols">
+    <div><a class="logo" href="#top"><i aria-hidden="true"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M4 20h16"/><path d="M7 20V9l5-5 5 5v11"/><path d="M10 14l1.5 1.5L15 12"/></svg></i>Relio</a></div>
+    <div><h6>Product</h6><ul><li><a href="#discover">Find services</a></li><li><a href="#features">For businesses</a></li><li><a href="#demand">Demand map</a></li><li><a href="#apps">Pro app</a></li><li><a href="#apps">Admin panel</a></li><li><a href="#pricing">Pricing</a></li></ul></div>
+    <div><h6>Categories</h6><ul><li><a href="#for">Cleaning</a></li><li><a href="#for">Home repairs</a></li><li><a href="#for">Tutoring</a></li><li><a href="#for">Register interest</a></li></ul></div>
+    <div><h6>Company</h6><ul><li><a href="#top">About</a></li><li><a href="platform-prototype.html" target="_blank" rel="noopener">Demo</a></li><li><a href="#top">Contact</a></li></ul></div>
+  </div>
+  <div class="fbase"><span>© 2026 Relio</span><nav aria-label="Legal"><a href="#top">Privacy</a><a href="#top">Terms</a><a href="#top">Cookies</a></nav></div>
+</div></footer>
+
+<div class="cookie" id="cookie" role="region" aria-label="Cookie notice" hidden><span>We use essential cookies only.</span><button class="btn dark sm" id="cookie-ok" type="button">OK</button></div>
