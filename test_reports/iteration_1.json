@@ -1,0 +1,32 @@
+{
+  "summary": "First run. Backend: POST /api/assistant/chat tested via pytest (8/8 pass): SSE chunks {t} ending {done:true}, 422 for empty/>500 chars/empty or missing session_id, follow-up context works (Team plan -> 'how many pros' answered '15 pros'), off-topic poem request politely declined. Frontend (Playwright, desktop 1920 + mobile 390): page loads with all sections, header nav scrolls, discover radios update #dd-list and #dd-svg, 7/7 product tabs switch #fmain, #q search updates #qhint (match / nothing found), booking slot/frequency update #bk-price (£114.75 -> £135.00), rota gaps 2 -> 1 -> Ready to publish, compare slider, credit note, payroll checkbox, bars hover/click, 5/5 assistant samples, live typed Q&A streams word-by-word with user bubble + .ans.live, Enter key submit, button disabled during stream, blank input ignored, billing toggle (£29->£24, £79->£66), ppc feature expand, demand layers update #dem-cap, apps tabs 4/4, Try the demo/Log in open /platform-prototype.html 'Demo arriving soon' with working back link, no console page errors, no horizontal overflow on mobile. One bug found and fixed: cookie notice OK did not hide it.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [
+      {"component": "Cookie notice", "issue": "FIXED by tester: clicking OK set hidden=true and localStorage but notice stayed visible (and reappeared after reload) because .cookie{display:flex} overrides the UA [hidden] rule; site has no global [hidden]{display:none!important}. Added '.cookie[hidden]{display:none!important}' to the live-assistant <style> block in /app/frontend/public/site.html. Verified hides and persists after reload.", "selector": "#cookie-ok", "priority": "MEDIUM"}
+    ],
+    "integration_issues": [],
+    "design_issues": [
+      {"screen": "Assistant", "issues": ["Clicking a sample question after a live chat wipes the visible live conversation (server-side memory remains, so a later typed follow-up still uses older context the user can no longer see). Consider keeping live history or resetting session when wiped.", "White text on brand orange Ask button (~3.3:1) is borderline contrast for 14px text"]}
+    ]
+  },
+  "test_report_links": ["/app/backend/tests/test_assistant_api.py", "/app/test_reports/pytest/pytest_results.xml"],
+  "action_items": [
+    "Keep the cookie fix: if /app/scripts/site/transform.py is re-run it regenerates site.html from /tmp/site.html and will drop the fix (add the rule to /tmp/extra.html or scripts/site/extra.html)",
+    "Estimator (#est / #est-p) requested in review does not exist in the page markup - the original source (/tmp/site.html) also contains only the JS (guarded by if(est)) without the form, so it is not rendered. Confirm with user whether that is expected",
+    "Optional: decide behaviour when sample button clicked after live chat (see design issue)"
+  ],
+  "critical_code_review_comments": [
+    "server.py: on LLM failure the stream emits {error} then {done}; frontend replaces partial text with error message - acceptable",
+    "server.py: user message is saved before LLM call; if LLM fails the history contains an unanswered user turn - minor",
+    "server.py: no rate limiting on public /api/assistant/chat (LLM cost exposure) - consider simple per-session/IP limit",
+    "site.html is ~1100 lines single file (faithful copy of provided html) - acceptable for this task"
+  ],
+  "updated_files": ["/app/frontend/public/site.html", "/app/backend/tests/test_assistant_api.py"],
+  "success_rate": {"backend": "100%", "frontend": "100% after cookie fix (1 bug fixed); estimator not present in source"},
+  "test_credentials": "none needed",
+  "seed_data_creation": "Assistant chat docs in assistant_messages with session_id prefixed TEST_",
+  "retest_needed": false,
+  "should_main_agent_self_test": true,
+  "context_for_next_testing_agent": "Run: pytest /app/backend/tests/test_assistant_api.py (pytest.ini uses xdist; use -n0 -s to see answers). Site is static public/site.html mounted by App.js. Cookie fix line is '.cookie[hidden]{display:none!important}' near the .askform styles."
+}

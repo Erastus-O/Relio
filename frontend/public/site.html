@@ -1066,6 +1066,7 @@ fieldset[disabled]{opacity:.45}
 .askhint{font-size:12px;color:var(--ink-3);margin:8px 0 0}
 .chat:has(.live){max-height:560px;overflow-y:auto}
 .ans.live .b p{margin:0}
+.cookie[hidden]{display:none!important}
 .ans.live .b .err{color:var(--ink-3)}
 </style>
 <script>
@@ -1073,7 +1074,8 @@ fieldset[disabled]{opacity:.45}
 (function(){
   const API=window.__CP_API;const f=document.getElementById('askform'),inp=document.getElementById('askq'),btn=document.getElementById('askbtn'),chat=document.getElementById('chat');
   if(!f||!API)return;
-  const sid=(crypto.randomUUID?crypto.randomUUID():String(Date.now())+Math.random().toString(16).slice(2));
+  const nid=()=>(crypto.randomUUID?crypto.randomUUID():String(Date.now())+Math.random().toString(16).slice(2));let sid=nid();
+  document.querySelectorAll('.asks button').forEach(b=>b.addEventListener('click',()=>{sid=nid()}));
   const esc=t=>t.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
   const inl=t=>esc(t).replace(/\*\*(.+?)\*\*/g,'<b>$1</b>');
   function md(t){const out=[];let ul=null;t.split('\n').forEach(l=>{const m=l.match(/^\s*[-*•]\s+(.*)/);if(m){if(!ul){ul=[];out.push(ul)}ul.push(m[1])}else{ul=null;if(l.trim())out.push(l.replace(/^#+\s*/,''))}});
