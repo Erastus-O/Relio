@@ -8,7 +8,7 @@ export const env = {
   port: Number(process.env.PORT ?? 4000),
   jwtSecret: req("JWT_SECRET", process.env.NODE_ENV === "production" ? undefined : "dev-only-secret"),
   uploadDir: process.env.UPLOAD_DIR ?? "./uploads",
-  corsOrigins: (process.env.CORS_ORIGINS ?? "http://localhost:3000,http://localhost:8081").split(","),
+  corsOrigins: (process.env.CORS_ORIGINS ?? "http://localhost:3000,http://localhost:3001,http://localhost:3002,http://localhost:3003,http://localhost:8081").split(","),
   disputeEvidenceDays: Number(process.env.DISPUTE_EVIDENCE_DAYS ?? 5),
   isProd: process.env.NODE_ENV === "production",
 };

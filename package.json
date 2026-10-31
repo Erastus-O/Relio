@@ -2,20 +2,28 @@
   "name": "relio",
   "private": true,
   "version": "0.1.0",
-  "description": "Relio: website, customer and business web app, admin panel, Pro mobile app and API.",
+  "description": "Relio: website, customer app, business app, admin panel, Pro mobile app and API.",
   "workspaces": [
     "packages/*",
     "apps/api",
-    "apps/web"
+    "apps/website",
+    "apps/customer",
+    "apps/business",
+    "apps/admin"
   ],
   "scripts": {
     "dev:api": "npm run dev -w @relio/api",
-    "dev:web": "npm run dev -w @relio/web",
+    "dev:website": "npm run dev -w @relio/website",
+    "dev:customer": "npm run dev -w @relio/customer",
+    "dev:business": "npm run dev -w @relio/business",
+    "dev:admin": "npm run dev -w @relio/admin",
+    "dev:web": "npm run dev -w @relio/website & npm run dev -w @relio/customer & npm run dev -w @relio/business & npm run dev -w @relio/admin & wait",
     "dev:pro": "cd apps/pro && npx expo start",
     "db:up": "docker compose up -d db",
     "db:migrate": "npm run prisma:migrate -w @relio/api",
     "db:seed": "npm run seed -w @relio/api",
-    "typecheck": "npm run typecheck -w @relio/shared && npm run typecheck -w @relio/api && npm run typecheck -w @relio/web",
+    "typecheck": "npm run typecheck -w @relio/shared && npm run typecheck -w @relio/web-ui && npm run typecheck -w @relio/api && npm run typecheck -w @relio/website && npm run typecheck -w @relio/customer && npm run typecheck -w @relio/business && npm run typecheck -w @relio/admin",
+    "build:web": "npm run build -w @relio/website && npm run build -w @relio/customer && npm run build -w @relio/business && npm run build -w @relio/admin",
     "test": "npm run test -w @relio/shared && npm run test -w @relio/api"
   },
   "engines": {

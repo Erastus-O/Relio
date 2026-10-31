@@ -5,3 +5,4 @@ dist
 uploads
 .expo
 *.log
+*.tsbuildinfo
