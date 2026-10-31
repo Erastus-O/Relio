@@ -1,0 +1,38 @@
+<style>
+.askform{display:flex;gap:8px;margin-top:18px;max-width:520px}
+.askform input{flex:1;min-width:0;height:44px;border-radius:999px;border:1px solid var(--line);background:var(--card);color:var(--ink);padding:0 18px;font:inherit;font-size:14px;transition:border-color .2s}
+.askform input:focus{outline:none;border-color:var(--brand)}
+.askform button{height:44px;padding:0 20px;border:0;border-radius:999px;background:var(--brand);color:#fff;font:600 14px/1 var(--f-body);cursor:pointer;transition:opacity .2s,transform .2s}
+.askform button:hover{transform:translateY(-1px)}
+.askform button:disabled{opacity:.55;cursor:wait;transform:none}
+.askhint{font-size:12px;color:var(--ink-3);margin:8px 0 0}
+.chat:has(.live){max-height:560px;overflow-y:auto}
+.ans.live .b p{margin:0}
+.ans.live .b .err{color:var(--ink-3)}
+</style>
+<script>
+/* live assistant */
+(function(){
+  const API=window.__CP_API;const f=document.getElementById('askform'),inp=document.getElementById('askq'),btn=document.getElementById('askbtn'),chat=document.getElementById('chat');
+  if(!f||!API)return;
+  const sid=(crypto.randomUUID?crypto.randomUUID():String(Date.now())+Math.random().toString(16).slice(2));
+  const esc=t=>t.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+  const inl=t=>esc(t).replace(/\*\*(.+?)\*\*/g,'<b>$1</b>');
+  function md(t){const out=[];let ul=null;t.split('\n').forEach(l=>{const m=l.match(/^\s*[-*•]\s+(.*)/);if(m){if(!ul){ul=[];out.push(ul)}ul.push(m[1])}else{ul=null;if(l.trim())out.push(l.replace(/^#+\s*/,''))}});
+    return out.map(x=>Array.isArray(x)?`<ul>${x.map(i=>`<li>${inl(i)}</li>`).join('')}</ul>`:`<p>${inl(x)}</p>`).join('')}
+  f.addEventListener('submit',async e=>{e.preventDefault();const q=inp.value.trim();if(!q||btn.disabled)return;inp.value='';btn.disabled=true;
+    document.querySelectorAll('.asks button').forEach(b=>b.setAttribute('aria-pressed','false'));
+    if(!chat.querySelector('.live'))chat.innerHTML='';
+    const u=document.createElement('div');u.className='bub live';u.textContent=q;chat.appendChild(u);
+    const a=document.createElement('div');a.className='ans live';a.setAttribute('data-testid','assistant-live-answer');
+    a.innerHTML='<div class="av" aria-hidden="true">✦</div><div class="b"><span class="typing" aria-label="Thinking"><i></i><i></i><i></i></span></div>';chat.appendChild(a);
+    const b=a.querySelector('.b');chat.scrollTop=chat.scrollHeight;let txt='';
+    try{const r=await fetch(API+'/assistant/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({session_id:sid,message:q})});
+      if(!r.ok||!r.body)throw new Error('bad');const rd=r.body.getReader(),dec=new TextDecoder();let buf='';
+      for(;;){const {value,done}=await rd.read();if(done)break;buf+=dec.decode(value,{stream:true});const parts=buf.split('\n\n');buf=parts.pop();
+        for(const p of parts){const line=p.trim();if(!line.startsWith('data:'))continue;const ev=JSON.parse(line.slice(5));if(ev.error)throw new Error(ev.error);if(ev.t){txt+=ev.t;b.innerHTML=md(txt);chat.scrollTop=chat.scrollHeight}}}
+      if(!txt)throw new Error('empty')}
+    catch(err){b.innerHTML='<p class="err">Sorry, the assistant could not answer just now. Please try again in a moment.</p>'}
+    finally{btn.disabled=false;inp.focus()}});
+})();
+</script>
